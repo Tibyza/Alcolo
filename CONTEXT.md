@@ -27,7 +27,7 @@ Alcolo est une appli web de jeux à boire entre potes, créée par Rémi. Une se
 
 - **Pensé pour des joueurs bourrés.** Gros boutons, gros textes, contrastes forts. Une action courante doit se faire en **2 taps maximum**.
 - **Pas de score, pas de classement, pas de points.** On s'en fiche, l'appli sert à faire boire, pas à compter.
-- **Rien ne doit faire « généré par une IA ».** Le style vise un tapis de jeu ou de casino vivant et des cartes qui ressemblent à de vraies cartes. On évite les dégradés violets génériques, les emojis partout et les textes creux.
+- **Rien ne doit faire « généré par une IA ».** Le style vise un bar de nuit : surfaces en verre dépoli (« liquid glass ») posées sur des lumières de bar qui dérivent lentement et des bulles qui montent, avec des cartes qui ressemblent à de vraies cartes. On évite les dégradés violets génériques, les emojis partout et les textes creux.
 - **Responsive** sur iPhone, iPad, en portrait comme en paysage. Les grandes cartes sont dimensionnées avec `--vh` (= `innerHeight`), pour que les boutons restent toujours visibles sans défiler.
 - **Animations courtes qui créent du suspense.** Pour révéler une carte, la carte suivante tremble dans la pyramide ou le plateau, puis s'envole en plein écran et se retourne (`flyReveal`). Un glissement vers le bas ferme la vue plein écran.
 - **Sons doux** synthétisés en WebAudio (swoosh, cloche, notes douces, grelots à Noël), sans fichier audio. Vibrations sur mobile. Le son peut se couper.
@@ -89,7 +89,12 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 ## Apparence
 
 - **Roue crantée en haut à droite** (`appSettings`) : thème, design des cartes, sons.
-- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : vert, bleu, rouge et Noël.
+- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Absinthe (`green`), Lagon (`blue`), Spritz (`red`) et Noël (`xmas`).
+  - Chaque thème « soirée » définit sa nuit (`--bg0`), ses 3 lumières (`--o1`, `--o2`, `--o3`) et sa couleur d'accent. Pour des raisons historiques, l'accent s'appelle toujours `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Seul Noël garde le vrai doré.
+  - Les calques `#amb` (lumières) et `#fizz` (bulles, créées par `fizz()`) sont masqués en thème Noël et coupés si le téléphone demande moins d'animations.
+  - Tout le style « soirée en verre » est regroupé dans un bloc CSS commenté `SOIRÉE EN VERRE`, avec des sélecteurs `body:not([data-felt="xmas"])` pour ne pas toucher à Noël.
+  - Le plateau est une plaque de verre éclairée par en dessous. La jauge de progression se remplit comme un verre, avec des bulles. Les coups de théâtre (cul sec) éclatent dans la couleur du thème.
+  - La couleur de la barre du téléphone (`theme-color`) suit le thème (`barColor`).
   - Le thème Noël est pensé comme un vrai Noël, pas un « Noël de casino ».
   - Les encarts et boutons y sont des cadeaux avec ruban et nœud, sur un fond nuit avec sapin, boules et neige.
   - Les éléments `.xo` n'apparaissent qu'en thème Noël, et les éléments `.so` sont masqués en thème Noël.
