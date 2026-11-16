@@ -26,7 +26,7 @@ Alcolo est une appli web de jeux à boire entre potes, créée par Rémi. Une se
 ## Principes de design (non négociables)
 
 - **Pensé pour des joueurs bourrés.** Gros boutons, gros textes, contrastes forts. Une action courante doit se faire en **2 taps maximum**.
-- **Pas de score, pas de classement, pas de points.** On s'en fiche, l'appli sert à faire boire, pas à compter.
+- **Pas de score affiché en gros.** L'appli sert à faire boire, pas à compter. Seule exception, voulue par Rémi : en Inter-Exter et Cheucheuille, un bouton podium discret dans la barre du haut ouvre une pop-up de classement des gorgées bues et données.
 - **Rien ne doit faire « généré par une IA ».** Le style vise un bar de nuit : surfaces en verre dépoli (« liquid glass ») posées sur des lumières de bar qui dérivent lentement et des bulles qui montent, avec des cartes qui ressemblent à de vraies cartes. On évite les dégradés violets génériques, les emojis partout et les textes creux.
 - **Responsive** sur iPhone, iPad, en portrait comme en paysage. Les grandes cartes sont dimensionnées avec `--vh` (= `innerHeight`), pour que les boutons restent toujours visibles sans défiler.
 - **Animations courtes qui créent du suspense.** Pour révéler une carte, la carte suivante tremble dans la pyramide ou le plateau, puis s'envole en plein écran et se retourne (`flyReveal`). Un glissement vers le bas ferme la vue plein écran.
@@ -85,6 +85,13 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
   - **Roi** : on verse ce qu'on veut dans le verre du milieu. Le **4e roi** boit le verre du milieu, ce qui termine la partie ;
   - autres cartes : rien.
 - Réglages : gorgées du Valet (2 ou 3), gorgées de la Dame (1 ou 2), trou dans le cercle (cul sec ou pas de pénalité).
+- Au lancement, une fenêtre **Ordre de pioche** montre les joueurs dans l'ordre. On glisse un nom pour le déplacer (`chuOrder`, `dragStart`, `chuOrderOk`), et le nouvel ordre est enregistré dans la liste des joueurs.
+
+### Classement des gorgées (Inter-Exter et Cheucheuille)
+- Le bouton podium `#rankBtn`, dans la barre du haut, ouvre la pop-up `showRank()`. On peut trier par « Qui a le plus bu » ou « Qui a le plus donné ». Les culs secs sont comptés à part.
+- Les compteurs `ST[i] = {bu, cs, don, dcs}` sont remis à zéro à chaque partie (`resetStats`) et alimentés par `addSt` :
+  - Inter-Exter : chaque réponse (bonne = donne, mauvaise = boit), puis chaque carte du plateau pour ceux qui ont la valeur.
+  - Cheucheuille : seulement ce que l'appli sait avec certitude, c'est-à-dire As, trou et 4e Roi (cul sec), 6 et 8 (1 gorgée, comptée comme donnée par le tireur) et 7 (1 gorgée pour tous). Les gages de la valise, du Valet, de la Dame et du 10 ne sont pas comptés.
 
 ## Apparence
 

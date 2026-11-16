@@ -11,7 +11,7 @@ Lis d'abord **CONTEXT.md** : règles des 3 modes, principes de design, organisat
 
 ## Rappels de design
 - Pensé pour des joueurs bourrés : gros boutons, 2 taps maximum par action.
-- Pas de score ni de classement.
+- Pas de score affiché en gros. Seule exception, voulue par Rémi : en Inter-Exter et Cheucheuille, un classement des gorgées bues et données, visible uniquement dans une pop-up via un petit bouton podium.
 - Rien qui fasse « généré par une IA ».
 - Responsive iPhone, iPad, portrait et paysage. Les boutons principaux restent visibles sans défiler.
 - Ne jamais envoyer la main secrète (`#hold`) au mode spectateur.
