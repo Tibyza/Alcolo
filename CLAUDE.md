@@ -15,3 +15,8 @@ Lis d'abord **CONTEXT.md** : règles des 3 modes, principes de design, organisat
 - Rien qui fasse « généré par une IA ».
 - Responsive iPhone, iPad, portrait et paysage. Les boutons principaux restent visibles sans défiler.
 - Ne jamais envoyer la main secrète (`#hold`) au mode spectateur.
+
+## Thèmes (voir CONTEXT.md › Apparence)
+- Noël (thème d'accueil), Absinthe, Lagon et Spritz utilisent le style « soirée en verre » : bloc CSS `SOIRÉE EN VERRE`, sous `body:not([data-felt="casino"])`. Casino garde l'ancien style tapis vert et or (bloc `CASINO`).
+- La couleur d'accent de chaque thème s'appelle toujours `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Pour un nouvel accent, utilise ces variables plutôt qu'une couleur écrite en dur.
+- Après une modification, vérifie les 5 thèmes, en portrait et en paysage.

@@ -29,7 +29,7 @@ Alcolo est une appli web de jeux à boire entre potes, créée par Rémi. Une se
 - **Pas de score affiché en gros.** L'appli sert à faire boire, pas à compter. Seule exception, voulue par Rémi : en Inter-Exter et Cheucheuille, un bouton podium discret dans la barre du haut ouvre une pop-up de classement des gorgées bues et données.
 - **Rien ne doit faire « généré par une IA ».** Le style vise un bar de nuit : surfaces en verre dépoli (« liquid glass ») posées sur des lumières de bar qui dérivent lentement et des bulles qui montent, avec des cartes qui ressemblent à de vraies cartes. On évite les dégradés violets génériques, les emojis partout et les textes creux.
 - **Responsive** sur iPhone, iPad, en portrait comme en paysage. Les grandes cartes sont dimensionnées avec `--vh` (= `innerHeight`), pour que les boutons restent toujours visibles sans défiler.
-- **Animations courtes qui créent du suspense.** Pour révéler une carte, la carte suivante tremble dans la pyramide ou le plateau, puis s'envole en plein écran et se retourne (`flyReveal`). Un glissement vers le bas ferme la vue plein écran.
+- **Animations courtes qui créent du suspense.** Pour révéler une carte, la carte suivante tremble dans la pyramide ou le plateau, puis s'envole en plein écran et se retourne (`flyReveal`). Un glissement vers le bas ou le bouton « ‹ Revenir à la pyramide » (`pyrBtn`) ferme la vue plein écran.
 - **Sons doux** synthétisés en WebAudio (swoosh, cloche, notes douces, grelots à Noël), sans fichier audio. Vibrations sur mobile. Le son peut se couper.
 - **Les fenêtres et vues plein écran se ferment** par un bouton en haut ou par un glissement vers le bas.
 - Le clavier se ferme avec Entrée sur un champ vide, en touchant ailleurs ou en faisant défiler.
@@ -108,7 +108,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
   - Les figures sont dessinées à la main et en miroir haut/bas.
   - Le deck Noël a un sapin au dos, le Père Noël en Roi, la Mère Noël en Dame, un renne en Valet et un cadeau pour l'As.
 - Le choix du deck change aussi les cartes affichées sur l'accueil (`renderFan`).
-- **Boutons en verre** (style « liquid glass ») : fond translucide flouté, reflet en haut, liseré clair. Le bouton principal garde la classe `.btn.gold` mais n'est plus jaune. Rouge et vert restent pour Bluff / Non / Oui, en verre teinté. Le thème Noël garde ses boutons cadeaux.
+- **Boutons en verre** (style « liquid glass ») : fond translucide flouté, reflet en haut, liseré clair. Le bouton principal garde la classe `.btn.gold` : il est éclairé par la couleur d'accent du thème, et redevient doré en Casino. Rouge et vert restent pour Bluff / Non / Oui, en verre teinté.
 - **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). On la change en touchant le joueur sur l'accueil : un petit encart s'ouvre avec les 6 boissons (`glassPick`, `setGlass`, élément `#gpop`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
 
 ## Mode spectateur (miroir)
@@ -134,11 +134,13 @@ Tout est dans un seul fichier : le CSS, puis le HTML, puis un seul script.
 | Réglages et stockage | `DEF`, `S` (réglages), `saveS()`, `names`, `GLASSES`. localStorage : `pyr_settings`, `pyr_names`, `pyr_glasses` |
 | Cartes | `face(c,cls,deck)`, `cardBody`, `courtSVG`, `modernCourt`, `noelCourt`, `noelAce`, `backCard` |
 | Sons | `ac()`, `bell`, `soft`, `swooshAt`, objet `sfx`, `vib()` |
-| Accueil | `renderSetup`, `setMode`, `settingsHTML`, `seg`, `setOpt`, `renderFan`, `appSettings`, `setFelt`, `setDeck`, `snow` |
+| Accueil | `renderSetup`, `setMode`, `settingsHTML`, `seg`, `setOpt`, `renderFan`, `appSettings`, `setFelt`, `setDeck`, `glassPick`, `setGlass` |
+| Ambiance | `fizz` (bulles), `snow` (neige), `garland` (guirlande de Noël), `barColor` (couleur de la barre du téléphone), `decorTree` (sapin de la Pyramide en Noël) |
 | Partie (commun) | `start`, `render`, `next`, `flyReveal`, `bigCard`, `stage()`, `modal()`, `lock()` (anti double tap) |
-| Pyramide | `startClassic`, `buildPyr`, `cFlip`, `showReveal`, `bluffPicker`, `liarCheck`, `bindHold`, `showHand`, `startAnnounce`, `annStep`, `annJudge`, `showSummit` |
+| Pyramide | `startClassic`, `buildPyr`, `decorTree`, `cFlip`, `showReveal`, `bluffPicker`, `liarCheck`, `bindHold`, `showHand`, `startAnnounce`, `annStep`, `annJudge`, `showSummit` |
 | Inter-Exter | `startIE`, `renderQuiz`, `answer`, `nextPlayer`, `renderIEBoard`, `ieNext`, `showIEReveal` |
-| Cheucheuille | `startChu`, `renderChu`, `chuDraw`, `chuRule`, `gapCount`, `showChuReveal` |
+| Classement | `ST`, `resetStats`, `addSt`, `showRank`, bouton `#rankBtn` |
+| Cheucheuille | `startChu`, `chuOrder`, `dragStart`, `chuOrderOk`, `renderChu`, `chuDraw`, `chuRule`, `gapCount`, `showChuReveal` |
 | Spectateur | `liveStart`, `livePush`, `liveStop`, `joinAsk`, `specStart`, `specRender`, `specStop` |
 
 Les autres fichiers :
@@ -151,3 +153,15 @@ Les autres fichiers :
 
 - **En local :** ouvrir `index.html` dans un navigateur suffit. Le mode spectateur demande une connexion internet.
 - **Sur téléphone :** utiliser l'adresse d'aperçu de `test`. Tester en portrait et en paysage, avec plusieurs joueurs, et vérifier que les boutons principaux restent visibles sans défiler.
+- **Tester chaque thème** (Noël, Absinthe, Lagon, Spritz, Casino), car le style Casino est séparé des autres. Vérifier aussi que la page ne dépasse jamais en largeur, surtout la barre du haut quand le code spectateur s'affiche.
+
+## Historique des évolutions
+
+- **Boissons des joueurs** : un verre par joueur (shot, bière, vin, champagne, cocktail, whisky) à la place des ronds colorés, choisi dans un petit encart.
+- **Refonte « soirée en verre »** : thèmes Absinthe, Lagon et Spritz, avec surfaces en verre, lumières de bar et bulles.
+- **Thème Casino** : l'ancien style tapis vert et or, gardé tel quel.
+- **Noël refait** : style en verre, nuit d'hiver, guirlande, neige, sapin en Pyramide. C'est le thème d'accueil.
+- **Bouton « Revenir à la pyramide »** sur la vue d'une carte en grand.
+- **Classement discret** des gorgées en Inter-Exter et Cheucheuille.
+- **Ordre de pioche** réglable au début du Cheucheuille.
+- **Correctif** : la barre du haut ne déborde plus sur iPhone quand le code spectateur s'affiche.
