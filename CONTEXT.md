@@ -98,6 +98,8 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
   - Les figures sont dessinées à la main et en miroir haut/bas.
   - Le deck Noël a un sapin au dos, le Père Noël en Roi, la Mère Noël en Dame, un renne en Valet et un cadeau pour l'As.
 - Le choix du deck change aussi les cartes affichées sur l'accueil (`renderFan`).
+- **Boutons en verre** (style « liquid glass ») : fond translucide flouté, reflet en haut, liseré clair. Le bouton principal garde la classe `.btn.gold` mais n'est plus jaune. Rouge et vert restent pour Bluff / Non / Oui, en verre teinté. Le thème Noël garde ses boutons cadeaux.
+- **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). On la change en touchant le verre sur l'accueil (`cycleGlass`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
 
 ## Mode spectateur (miroir)
 
@@ -119,7 +121,7 @@ Tout est dans un seul fichier : le CSS, puis le HTML, puis un seul script.
 
 | Zone | Éléments clés |
 |---|---|
-| Réglages et stockage | `DEF`, `S` (réglages), `saveS()`, `names`. localStorage : `pyr_settings`, `pyr_names` |
+| Réglages et stockage | `DEF`, `S` (réglages), `saveS()`, `names`, `GLASSES`. localStorage : `pyr_settings`, `pyr_names`, `pyr_glasses` |
 | Cartes | `face(c,cls,deck)`, `cardBody`, `courtSVG`, `modernCourt`, `noelCourt`, `noelAce`, `backCard` |
 | Sons | `ac()`, `bell`, `soft`, `swooshAt`, objet `sfx`, `vib()` |
 | Accueil | `renderSetup`, `setMode`, `settingsHTML`, `seg`, `setOpt`, `renderFan`, `appSettings`, `setFelt`, `setDeck`, `snow` |
