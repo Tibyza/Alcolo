@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Alcolo">
-<meta name="theme-color" content="#0a2a1e">
+<meta name="theme-color" content="#05111e">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -805,10 +805,12 @@ function load(k,d){try{const v=JSON.parse(localStorage.getItem(k)||'null');retur
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 
 let names=load('pyr_names',[]);if(!Array.isArray(names))names=[];names=names.filter(x=>typeof x==='string').slice(0,MAXP);
-const DEF={mode:'classic',sound:true,felt:'green',deck:'classic',classic:{rows:6,hand:4,dbl:false,summit:true,peek:true},ie:{cols:5,dbl:false,culsec:true},chu:{valet:2,dame:1,hole:true}};
+const DEF={mode:'classic',sound:true,felt:'xmas',deck:'noel',classic:{rows:6,hand:4,dbl:false,summit:true,peek:true},ie:{cols:5,dbl:false,culsec:true},chu:{valet:2,dame:1,hole:true}};
 let S=load('pyr_settings',{});if(!S||typeof S!=='object')S={};
 S={...DEF,...S,classic:{...DEF.classic,...(S.classic||{})},ie:{...DEF.ie,...(S.ie||{})},chu:{...DEF.chu,...(S.chu||{})}};
 S.mode=null;   // à l'ouverture, aucun jeu choisi : on affiche Alcolo
+// Noël devient le thème d'accueil : on y bascule une fois tous ceux qui avaient déjà un autre thème (ils peuvent ensuite rechanger)
+if(!S.noel26){S.noel26=true;S.felt='xmas';S.deck='noel';save('pyr_settings',S)}
 if(!['green','blue','red','casino','xmas'].includes(S.felt))S.felt='green';
 if(!['classic','elegant','modern','retro','noel'].includes(S.deck))S.deck='classic';
 document.body.dataset.deck=S.deck;
@@ -1072,7 +1074,7 @@ function renderFan(force=true){
   const sg=$('.sign');sg.classList.remove('swap');void sg.offsetWidth;sg.classList.add('swap');
 }
 renderFan();
-const THEMES=[['green','Absinthe','radial-gradient(circle at 30% 30%,#a6e22e,#14b874 45%,#04150f 85%)'],['blue','Lagon','radial-gradient(circle at 30% 30%,#13c8d8,#2f7dff 45%,#050c20 85%)'],['red','Spritz','radial-gradient(circle at 30% 30%,#ff8a26,#ff2d62 45%,#17040b 85%)'],['casino','Casino','radial-gradient(#2a9a68,#0a3a27)'],['xmas','Noël','linear-gradient(#0a1a3a,#24558f)']];
+const THEMES=[['xmas','Noël','linear-gradient(#0a1a3a,#24558f)'],['green','Absinthe','radial-gradient(circle at 30% 30%,#a6e22e,#14b874 45%,#04150f 85%)'],['blue','Lagon','radial-gradient(circle at 30% 30%,#13c8d8,#2f7dff 45%,#050c20 85%)'],['red','Spritz','radial-gradient(circle at 30% 30%,#ff8a26,#ff2d62 45%,#17040b 85%)'],['casino','Casino','radial-gradient(#2a9a68,#0a3a27)']];
 const DECKS=[['classic','Classique'],['elegant','Élégant'],['modern','Moderne'],['retro','Rétro'],['noel','Noël']];
 let appOpen=false;
 function appSettings(still=false){

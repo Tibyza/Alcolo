@@ -89,7 +89,8 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 ## Apparence
 
 - **Roue crantée en haut à droite** (`appSettings`) : thème, design des cartes, sons.
-- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Absinthe (`green`), Lagon (`blue`), Spritz (`red`), Casino (`casino`) et Noël (`xmas`).
+- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Noël (`xmas`), Absinthe (`green`), Lagon (`blue`), Spritz (`red`) et Casino (`casino`).
+  - **Noël est le thème d'accueil** (`DEF.felt='xmas'`, deck `noel`). Les joueurs qui avaient déjà un autre thème y sont basculés une seule fois (drapeau `S.noel26`), puis leur choix est respecté.
   - **Absinthe, Lagon, Spritz et Noël** partagent le style « soirée en verre » : nuit (`--bg0`), 3 lumières qui dérivent (`#amb`, couleurs `--o1`, `--o2`, `--o3`), surfaces en verre dépoli. Pour des raisons historiques, l'accent s'appelle `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Les règles de ce style sont dans le bloc CSS `SOIRÉE EN VERRE`, sous `body:not([data-felt="casino"])`.
   - Absinthe, Lagon et Spritz ont en plus des bulles qui montent (`#fizz`, créées par `fizz()`).
   - **Noël** : nuit d'hiver, lumières rouge, dorée et sapin, accent doré, neige (`snow()`), guirlande lumineuse en haut de l'accueil (`garland()`, élément `.garland.xo`), givre léger sur le haut des encarts. Les anciens cadeaux, rubans, sapin, boules et chapeau ont été retirés. En Pyramide, la pyramide devient un **sapin** (`decorTree`, classe `.pyr.xtree`) : silhouette en étages, étoile au sommet, tronc, guirlandes lumineuses entre les rangées et boules sur les bords. Le dessin suit la position réelle des cartes et se refait quand l'écran change, y compris côté spectateur. Les éléments `.xo` n'apparaissent qu'en Noël et les `.so` y sont masqués.
