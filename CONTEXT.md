@@ -92,7 +92,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 - **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Absinthe (`green`), Lagon (`blue`), Spritz (`red`), Casino (`casino`) et Noël (`xmas`).
   - **Absinthe, Lagon, Spritz et Noël** partagent le style « soirée en verre » : nuit (`--bg0`), 3 lumières qui dérivent (`#amb`, couleurs `--o1`, `--o2`, `--o3`), surfaces en verre dépoli. Pour des raisons historiques, l'accent s'appelle `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Les règles de ce style sont dans le bloc CSS `SOIRÉE EN VERRE`, sous `body:not([data-felt="casino"])`.
   - Absinthe, Lagon et Spritz ont en plus des bulles qui montent (`#fizz`, créées par `fizz()`).
-  - **Noël** : nuit d'hiver, lumières rouge, dorée et sapin, accent doré, neige (`snow()`), guirlande lumineuse en haut de l'accueil (`garland()`, élément `.garland.xo`), givre léger sur le haut des encarts. Les anciens cadeaux, rubans, sapin, boules et chapeau ont été retirés. Les éléments `.xo` n'apparaissent qu'en Noël et les `.so` y sont masqués.
+  - **Noël** : nuit d'hiver, lumières rouge, dorée et sapin, accent doré, neige (`snow()`), guirlande lumineuse en haut de l'accueil (`garland()`, élément `.garland.xo`), givre léger sur le haut des encarts. Les anciens cadeaux, rubans, sapin, boules et chapeau ont été retirés. En Pyramide, la pyramide devient un **sapin** (`decorTree`, classe `.pyr.xtree`) : silhouette en étages, étoile au sommet, tronc, guirlandes lumineuses entre les rangées et boules sur les bords. Le dessin suit la position réelle des cartes et se refait quand l'écran change, y compris côté spectateur. Les éléments `.xo` n'apparaissent qu'en Noël et les `.so` y sont masqués.
   - **Casino** : le tapis vert et l'or d'origine, sans verre ni lumières (bloc CSS `CASINO`).
   - Lumières, bulles, neige et guirlande s'arrêtent si le téléphone demande moins d'animations. La couleur de la barre du téléphone suit le thème (`barColor`).
 - **Decks** (`DECKS`, attribut `body[data-deck]`) : Classique, Élégant, Moderne, Rétro et Noël.
@@ -101,7 +101,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
   - Le deck Noël a un sapin au dos, le Père Noël en Roi, la Mère Noël en Dame, un renne en Valet et un cadeau pour l'As.
 - Le choix du deck change aussi les cartes affichées sur l'accueil (`renderFan`).
 - **Boutons en verre** (style « liquid glass ») : fond translucide flouté, reflet en haut, liseré clair. Le bouton principal garde la classe `.btn.gold` mais n'est plus jaune. Rouge et vert restent pour Bluff / Non / Oui, en verre teinté. Le thème Noël garde ses boutons cadeaux.
-- **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). On la change en touchant le verre sur l'accueil (`cycleGlass`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
+- **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). On la change en touchant le joueur sur l'accueil : un petit encart s'ouvre avec les 6 boissons (`glassPick`, `setGlass`, élément `#gpop`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
 
 ## Mode spectateur (miroir)
 

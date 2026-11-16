@@ -213,9 +213,28 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .glass .gs{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
 .glass .gb{fill:rgba(255,255,255,.75)}
 .glass .gi{fill:rgba(235,248,255,.7);stroke:rgba(255,255,255,.9);stroke-width:.6}
-.avb{width:40px;height:40px;cursor:pointer;transition:transform .12s}
-.avb:active{transform:scale(.9)}
-.avb.pop .glass{animation:gpop .35s cubic-bezier(.2,.9,.3,1.4)}
+.pchip .pname{display:flex;align-items:center;gap:8px;font-weight:600;padding:0 4px 0 0;width:auto;height:auto;border-radius:999px;background:none;font-size:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
+.pname .av{width:36px;height:36px}
+.pchip .pname:active{transform:scale(.95)}
+.av.pop .glass{animation:gpop .35s cubic-bezier(.2,.9,.3,1.4)}
+.gpop{position:fixed;z-index:30;width:min(300px,calc(100vw - 20px));padding:12px;border-radius:22px;color:var(--ink);
+  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05)),color-mix(in srgb,var(--deep) 88%,transparent);
+  -webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
+  border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.5);animation:gpin .18s ease-out;transform-origin:var(--ax) 0}
+.gpop.up{transform-origin:var(--ax) 100%}
+.gpop:before{content:"";position:absolute;left:var(--ax);top:-7px;width:14px;height:14px;margin-left:-7px;transform:rotate(45deg);
+  background:color-mix(in srgb,var(--deep) 92%,#fff 8%);border-left:1px solid rgba(255,255,255,.2);border-top:1px solid rgba(255,255,255,.2)}
+.gpop.up:before{top:auto;bottom:-7px;transform:rotate(225deg)}
+@keyframes gpin{from{opacity:0;transform:scale(.85)}}
+.gptitle{font-size:14px;color:var(--mute);text-align:center;margin:0 0 10px}.gptitle b{color:var(--ink)}
+.gpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gpopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:16px;font-weight:700;font-size:13px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);transition:transform .1s}
+.gpopt:active{transform:scale(.93)}
+.gpopt .glass{width:40px;height:40px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35))}
+.gpopt.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 18%,transparent);color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--gold) 25%,transparent)}
+body[data-felt="casino"] .gpop{background:linear-gradient(180deg,var(--deep),var(--deep2));-webkit-backdrop-filter:none;backdrop-filter:none;border-color:var(--goldline)}
+body[data-felt="casino"] .gpop:before{background:var(--deep);border-color:var(--goldline)}
 @keyframes gpop{from{transform:scale(.4) rotate(-14deg)}}
 .glasshint{flex-basis:100%;font-size:12.5px;color:var(--mute);margin:8px 2px 0}
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -252,6 +271,15 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
   border:7px solid #4a2a14;box-shadow:0 0 0 2px #d6a645,0 0 0 4px #2a170a,0 16px 40px rgba(0,0,0,.5),inset 0 0 0 2px rgba(214,166,69,.5),inset 0 4px 30px rgba(0,0,0,.4);
   background-clip:padding-box}
 .pyr{display:flex;flex-direction:column;gap:6px}
+.pyr.xtree{position:relative;gap:11px;padding:calc(var(--cw) * .95) 0 calc(var(--cw) * .5)}
+.pyr .xdeco{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.pyr .xsnow{fill:none;stroke:rgba(235,246,255,.55);stroke-width:2;stroke-linecap:round;stroke-dasharray:1 6}
+.pyr .xwire{fill:none;stroke:rgba(20,40,28,.85);stroke-width:1.2}
+.pyr .xbulb{animation:twink2 2.6s ease-in-out infinite}
+@keyframes twink2{50%{opacity:.35}}
+.pyr .xstar{fill:#ffd27a;stroke:#fff3c4;stroke-width:1.2;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(255,210,122,.9));animation:starpulse 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes starpulse{50%{transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.pyr .xbulb,.pyr .xstar{animation:none}}
 .prow{position:relative;display:flex;justify-content:center;gap:4px}
 .lab{position:absolute;left:0;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;
   background:rgba(0,0,0,.35);border:2px solid color-mix(in srgb,var(--gold) 45%,transparent);color:var(--gold);font-size:16px;font-weight:800;display:grid;place-items:center;transition:.3s}
@@ -663,6 +691,8 @@ body[data-felt="xmas"] .btn.red{background:linear-gradient(180deg,rgba(226,52,78
   .stage .in{max-width:none}
   .stage .head{min-height:44px}
   .pyrbtn{height:44px;font-size:16px}
+  body[data-felt="xmas"]{--cw:min(calc((var(--vh,100vh) - 165px) / (var(--rows,6) * 1.55 + 1.15)),calc((54vw - 130px) / (var(--rows,6) + .6)),62px)}
+  .pyr.xtree{gap:8px;padding:calc(var(--cw) * .8) 0 calc(var(--cw) * .38)}
   .stage .mid{flex-direction:row;gap:28px}
   .stage .mid>h2{display:none}
   .stage .mid .after{max-width:46%;text-align:left}
@@ -802,9 +832,24 @@ let GLASSES=load('pyr_glasses',{});if(!GLASSES||typeof GLASSES!=='object'||Array
 const glassOf=n=>GLASS_SVG[GLASSES[n]]?GLASSES[n]:'shot';
 const drinkSVG=g=>`<svg class="glass" viewBox="0 0 32 32" aria-hidden="true">${GLASS_SVG[g]}</svg>`;
 const av=i=>`<span class="av" title="${GLASS_NAME[glassOf(names[i])]}">${drinkSVG(glassOf(names[i]))}</span>`;
-function cycleGlass(i){const n=names[i];if(n==null)return;const g=GLASS_ORDER[(GLASS_ORDER.indexOf(glassOf(n))+1)%GLASS_ORDER.length];
-  GLASSES[n]=g;save('pyr_glasses',GLASSES);sfx.tap();vib(8);renderSetup();
-  const b=document.querySelectorAll('#plist .avb')[i];if(b){b.classList.add('pop');toast(GLASS_NAME[g])}}
+/* petit encart sous le joueur : on touche une boisson, c'est choisi */
+function glassPick(i,btn){
+  const old=$('#gpop');if(old){const same=old.dataset.i==String(i);old.remove();if(same)return}
+  const n=names[i];if(n==null)return;sfx.tap();
+  const cur=glassOf(n),el=document.createElement('div');el.id='gpop';el.className='gpop';el.dataset.i=i;
+  el.innerHTML=`<div class="gptitle">La boisson de <b>${esc(n)}</b></div><div class="gpgrid">${GLASS_ORDER.map(g=>
+    `<button type="button" class="gpopt${g===cur?' on':''}" onclick="setGlass(${i},'${g}')">${drinkSVG(g)}<span>${GLASS_NAME[g]}</span></button>`).join('')}</div>`;
+  document.body.appendChild(el);
+  const r=btn.getBoundingClientRect(),W=el.offsetWidth,H=el.offsetHeight,vw=document.documentElement.clientWidth;
+  let x=Math.max(10,Math.min(r.left+r.width/2-W/2,vw-W-10)),y=r.bottom+8;
+  if(y+H>innerHeight-10&&r.top-H-8>10){y=r.top-H-8;el.classList.add('up')}
+  el.style.left=x+'px';el.style.top=y+'px';el.style.setProperty('--ax',(r.left+r.width/2-x)+'px');
+}
+function setGlass(i,g){const n=names[i];if(n==null)return;GLASSES[n]=g;save('pyr_glasses',GLASSES);vib(8);sfx.tap();closeGlassPick();renderSetup();
+  const b=document.querySelectorAll('#plist .pname .av')[i];if(b)b.classList.add('pop')}
+function closeGlassPick(){const o=$('#gpop');if(o)o.remove()}
+document.addEventListener('pointerdown',e=>{if($('#gpop')&&!e.target.closest('#gpop,.pname'))closeGlassPick()},true);
+window.addEventListener('scroll',closeGlassPick,{passive:true});
 const isRed=c=>c.s==='♥'||c.s==='♦';
 const PIPS={2:[[50,18],[50,82]],3:[[50,18],[50,50],[50,82]],4:[[32,18],[68,18],[32,82],[68,82]],
  5:[[32,18],[68,18],[50,50],[32,82],[68,82]],6:[[32,18],[68,18],[32,50],[68,50],[32,82],[68,82]],
@@ -1080,7 +1125,7 @@ function renderSetup(){
   document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('sel',b.dataset.m===S.mode));
   $('#modeSet').innerHTML=S.mode?settingsHTML():`<p class="modehint none">Choisis un jeu pour voir ses réglages.</p>`;
   $('#plist').innerHTML=names.length
-    ?names.map((n,i)=>`<div class="pchip"><button type="button" class="av avb" onclick="cycleGlass(${i})" aria-label="Changer le verre de ${esc(n)} (${GLASS_NAME[glassOf(n)]})">${drinkSVG(glassOf(n))}</button><span>${esc(n)}</span><button type="button" onclick="rmP(${i})" aria-label="Retirer">✕</button></div>`).join('')+'<p class="glasshint">Touche un verre pour choisir ta boisson.</p>'
+    ?names.map((n,i)=>`<div class="pchip"><button type="button" class="pname" onclick="glassPick(${i},this)" aria-label="Choisir la boisson de ${esc(n)}"><span class="av">${drinkSVG(glassOf(n))}</span><span>${esc(n)}</span></button><button type="button" onclick="rmP(${i})" aria-label="Retirer">✕</button></div>`).join('')+'<p class="glasshint">Touche un joueur pour choisir sa boisson.</p>'
     :'<p class="hint" style="margin:0">De 2 à 20 joueurs.</p>';
   $('#count').textContent=`${names.length} / ${MAXP}`;
   $('#startBtn').disabled=names.length<2||!S.mode;
@@ -1213,7 +1258,45 @@ function buildPyr(){
     html+=`<div class="prow" data-r="${r}"><span class="lab">${isSummitRow(r)?ic('glass'):rowSips(r)}</span>${cells}</div>`;
   }
   $('#board').innerHTML=`<div class="pyr">${html}</div>`;
+  requestAnimationFrame(decorTree);
 }
+/* En thème Noël, la pyramide devient un sapin : silhouette, étoile, tronc, guirlandes et boules.
+   Dessiné d'après la position réelle des cartes, redessiné si l'écran change. */
+function decorTree(){
+  const P=$('#board .pyr');if(!P)return;
+  P.querySelectorAll('.xdeco').forEach(e=>e.remove());const on=document.body.dataset.felt==='xmas';
+  P.classList.toggle('xtree',on);if(!on)return;
+  const rows=[...P.querySelectorAll('.prow')];if(!rows.length)return;
+  const B=rows.map(r=>{const s=[...r.querySelectorAll('.slot')],a=s[0],b=s[s.length-1];return {l:r.offsetLeft+a.offsetLeft,r:r.offsetLeft+b.offsetLeft+b.offsetWidth,t:r.offsetTop+a.offsetTop,b:r.offsetTop+a.offsetTop+a.offsetHeight}});
+  const W=P.offsetWidth,H=P.offsetHeight,top=B[0],bot=B[B.length-1],cw=top.r-top.l,cx=(top.l+top.r)/2;
+  const apex=top.t-cw*.62,base=bot.b+cw*.16,half=(bot.r-bot.l)/2+cw*.42,hw=y=>half*Math.max(0,(y-apex)/(base-apex));
+  const f=v=>v.toFixed(1),n=Math.max(3,Math.min(5,Math.round(rows.length*.7)));
+  let tiers='';
+  for(let k=n-1;k>=0;k--){const y0=apex+(base-apex)*(k?k/n-.08:0),y1=apex+(base-apex)*(k+1)/n,w=hw(y1)*(k===n-1?1:1.06),tw=k?hw(y0)*.42:0;
+    tiers+=`<path d="M${f(cx-tw)} ${f(y0)}L${f(cx-w)} ${f(y1)}Q${f(cx)} ${f(y1+cw*.22)} ${f(cx+w)} ${f(y1)}L${f(cx+tw)} ${f(y0)}Z" fill="url(#xtg)"/>`+
+      `<path d="M${f(cx-w)} ${f(y1)}Q${f(cx)} ${f(y1+cw*.22)} ${f(cx+w)} ${f(y1)}" class="xsnow"/>`}
+  const trunk=`<rect x="${f(cx-cw*.32)}" y="${f(base-cw*.05)}" width="${f(cw*.64)}" height="${f(cw*.42)}" rx="${f(cw*.06)}" fill="url(#xtt)"/>`;
+  const C=['#ffd27a','#ff4d5e','#8dffb0','#fff1c9','#ffb444','#7fc8ff'];let lights='',balls='',k=0;
+  for(let i=0;i<rows.length-1;i++){
+    const y=(B[i].b+B[i+1].t)/2,dir=i%2?1:-1,w=hw(y)*.98,y1=y+dir*cw*.08,y2=y-dir*cw*.08;
+    lights+=`<path d="M${f(cx-w)} ${f(y1)}Q${f(cx)} ${f(y+cw*.12)} ${f(cx+w)} ${f(y2)}" class="xwire"/>`;
+    const m=Math.max(3,Math.round(w*2/(cw*.55)));
+    for(let j=1;j<m;j++){const t=j/m,x=(1-t)*(1-t)*(cx-w)+2*(1-t)*t*cx+t*t*(cx+w),yy=(1-t)*(1-t)*y1+2*(1-t)*t*(y+cw*.12)+t*t*y2;
+      lights+=`<circle cx="${f(x)}" cy="${f(yy)}" r="${f(Math.max(2.2,cw*.07))}" fill="${C[k%C.length]}" class="xbulb" style="animation-delay:-${(k*.41%2.6).toFixed(2)}s"/>`;k++}
+  }
+  const BC=['#d1203f','#ffd27a','#3fa7ff','#e24ad1'];
+  B.forEach((b,i)=>{if(!i)return;const yy=(b.t+b.b)/2+cw*.15,w=hw(yy);if(w-(b.r-b.l)/2<cw*.18)return;
+    [-1,1].forEach((s,q)=>{const x=cx+s*((b.r-b.l)/2+(w-(b.r-b.l)/2)*.5);balls+=`<circle cx="${f(x)}" cy="${f(yy)}" r="${f(cw*.12)}" fill="url(#xb${(i+q)%4})"/>`})});
+  const R=cw*.36,sy=apex-R*.15;let st='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?R*.45:R;st+=`${i?'L':'M'}${f(cx+rr*Math.cos(a))} ${f(sy+rr*Math.sin(a))}`}
+  const defs=`<defs><linearGradient id="xtg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8f52"/><stop offset="1" stop-color="#0f4a2b"/></linearGradient>
+    <linearGradient id="xtt" x1="0" x2="1"><stop offset="0" stop-color="#5a3519"/><stop offset=".5" stop-color="#8a5a2e"/><stop offset="1" stop-color="#4a2a12"/></linearGradient>
+    ${BC.map((c,i)=>`<radialGradient id="xb${i}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".75"/></radialGradient>`).join('')}
+    <filter id="xglow" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+  const back=`<svg class="xdeco" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">${defs}${trunk}${tiers}${balls}</svg>`;
+  const front=`<svg class="xdeco xfront" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><g filter="url(#xglow)">${lights}</g><path d="${st}Z" class="xstar"/></svg>`;
+  P.insertAdjacentHTML('afterbegin',back);P.insertAdjacentHTML('beforeend',front);
+}
+let treeT;window.addEventListener('resize',()=>{clearTimeout(treeT);treeT=setTimeout(decorTree,150)});
 function renderClassic(){updatePyr();renderAction();renderDock();$('#extra').innerHTML=''}
 function updatePyr(){
   document.querySelectorAll('.slot[data-i]').forEach(el=>{
@@ -1794,7 +1877,7 @@ function specRender(v){
   const deck=['classic','elegant','modern','retro','noel'].includes(v.deck)?v.deck:'classic';document.body.dataset.deck=deck;snowFor(v.felt);
   $('#setup').hidden=true;$('#game').hidden=false;$('#dock').hidden=true;
   $('#gTitle').textContent=v.title||'';$('#stat').textContent=v.stat||'';$('#prog').style.width=v.prog||'0%';
-  $('#board').innerHTML=expand(v.board,deck);
+  $('#board').innerHTML=expand(v.board,deck);requestAnimationFrame(decorTree);
   $('#action').style.display=v.action?'':'none';$('#action').innerHTML=expand(v.action,deck);
   $('#extra').innerHTML=expand(v.extra,deck);
   $('#stage').innerHTML=expand(v.stage,deck);document.body.classList.toggle('lock',!!v.stage);
