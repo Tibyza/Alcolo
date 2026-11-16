@@ -89,15 +89,12 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 ## Apparence
 
 - **Roue crantée en haut à droite** (`appSettings`) : thème, design des cartes, sons.
-- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Absinthe (`green`), Lagon (`blue`), Spritz (`red`) et Noël (`xmas`).
-  - Chaque thème « soirée » définit sa nuit (`--bg0`), ses 3 lumières (`--o1`, `--o2`, `--o3`) et sa couleur d'accent. Pour des raisons historiques, l'accent s'appelle toujours `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Seul Noël garde le vrai doré.
-  - Les calques `#amb` (lumières) et `#fizz` (bulles, créées par `fizz()`) sont masqués en thème Noël et coupés si le téléphone demande moins d'animations.
-  - Tout le style « soirée en verre » est regroupé dans un bloc CSS commenté `SOIRÉE EN VERRE`, avec des sélecteurs `body:not([data-felt="xmas"])` pour ne pas toucher à Noël.
-  - Le plateau est une plaque de verre éclairée par en dessous. La jauge de progression se remplit comme un verre, avec des bulles. Les coups de théâtre (cul sec) éclatent dans la couleur du thème.
-  - La couleur de la barre du téléphone (`theme-color`) suit le thème (`barColor`).
-  - Le thème Noël est pensé comme un vrai Noël, pas un « Noël de casino ».
-  - Les encarts et boutons y sont des cadeaux avec ruban et nœud, sur un fond nuit avec sapin, boules et neige.
-  - Les éléments `.xo` n'apparaissent qu'en thème Noël, et les éléments `.so` sont masqués en thème Noël.
+- **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Absinthe (`green`), Lagon (`blue`), Spritz (`red`), Casino (`casino`) et Noël (`xmas`).
+  - **Absinthe, Lagon, Spritz et Noël** partagent le style « soirée en verre » : nuit (`--bg0`), 3 lumières qui dérivent (`#amb`, couleurs `--o1`, `--o2`, `--o3`), surfaces en verre dépoli. Pour des raisons historiques, l'accent s'appelle `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Les règles de ce style sont dans le bloc CSS `SOIRÉE EN VERRE`, sous `body:not([data-felt="casino"])`.
+  - Absinthe, Lagon et Spritz ont en plus des bulles qui montent (`#fizz`, créées par `fizz()`).
+  - **Noël** : nuit d'hiver, lumières rouge, dorée et sapin, accent doré, neige (`snow()`), guirlande lumineuse en haut de l'accueil (`garland()`, élément `.garland.xo`), givre léger sur le haut des encarts. Les anciens cadeaux, rubans, sapin, boules et chapeau ont été retirés. Les éléments `.xo` n'apparaissent qu'en Noël et les `.so` y sont masqués.
+  - **Casino** : le tapis vert et l'or d'origine, sans verre ni lumières (bloc CSS `CASINO`).
+  - Lumières, bulles, neige et guirlande s'arrêtent si le téléphone demande moins d'animations. La couleur de la barre du téléphone suit le thème (`barColor`).
 - **Decks** (`DECKS`, attribut `body[data-deck]`) : Classique, Élégant, Moderne, Rétro et Noël.
   - Les cartes sont dessinées en CSS et SVG, avec le vrai nombre de symboles disposés comme sur de vraies cartes.
   - Les figures sont dessinées à la main et en miroir haut/bas.
