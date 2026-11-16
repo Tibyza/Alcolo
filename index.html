@@ -12,6 +12,17 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <title>Alcolo – jeux à boire</title>
+<meta name="description" content="Jeux à boire entre potes sur un seul téléphone : Pyramide, Inter-Exter et Cheucheuille.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alcolo">
+<meta property="og:title" content="Alcolo – jeux à boire">
+<meta property="og:description" content="Pyramide, Inter-Exter, Cheucheuille : on pose le téléphone au milieu de la table et c'est parti.">
+<meta property="og:url" content="https://alcolo.pages.dev/">
+<meta property="og:image" content="https://alcolo.pages.dev/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Alcolo, jeux à boire : un as de cœur et un shot">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -25,7 +36,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-html{background:#050d0a}
+html{background:#05111e}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.55))}
 body:after{content:"";position:fixed;left:50%;top:-25vh;width:120vw;height:70vh;transform:translateX(-50%);pointer-events:none;z-index:0;
   background:radial-gradient(closest-side,rgba(255,236,170,.16),transparent);animation:lamp 6s ease-in-out infinite}
@@ -726,6 +737,13 @@ body[data-felt="xmas"] .btn.red{background:linear-gradient(180deg,rgba(226,52,78
 </style>
 </head>
 <body>
+<script>/* Thème appliqué dès l'ouverture, avant tout le reste : évite le flash d'une autre couleur au démarrage */
+(function(){var b=document.body,f='xmas',d='noel';try{var s=JSON.parse(localStorage.getItem('pyr_settings')||'{}')||{};
+if(s.noel26){f=s.felt;d=s.deck}}catch(e){}
+if(['green','blue','red','casino','xmas'].indexOf(f)<0)f='xmas';if(['classic','elegant','modern','retro','noel'].indexOf(d)<0)d='noel';
+b.dataset.felt=f;b.dataset.deck=d;
+var c={green:'#04150f',blue:'#050c20',red:'#17040b',casino:'#0a2a1e',xmas:'#05111e'}[f];document.documentElement.style.background=c;
+var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',c)})();</script>
 <div id="amb" aria-hidden="true"><i></i><i></i><i></i></div><div id="fizz" aria-hidden="true"></div>
 <div class="wrap">
 
@@ -791,9 +809,6 @@ body[data-felt="xmas"] .btn.red{background:linear-gradient(180deg,rgba(226,52,78
 <div id="toast"></div>
 <div class="specbar"><span>Spectateur · partie <b id="specCode"></b></span><button onclick="specStop()">Quitter</button></div>
 
-<script src="firebase-config.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 /* ================= Base ================= */
 const SUITS=['♠','♥','♦','♣'],RANKS=['A','2','3','4','5','6','7','8','9','10','V','D','R'];
@@ -831,8 +846,8 @@ S={...DEF,...S,classic:{...DEF.classic,...(S.classic||{})},ie:{...DEF.ie,...(S.i
 S.mode=null;   // à l'ouverture, aucun jeu choisi : on affiche Alcolo
 // Noël devient le thème d'accueil : on y bascule une fois tous ceux qui avaient déjà un autre thème (ils peuvent ensuite rechanger)
 if(!S.noel26){S.noel26=true;S.felt='xmas';S.deck='noel';save('pyr_settings',S)}
-if(!['green','blue','red','casino','xmas'].includes(S.felt))S.felt='green';
-if(!['classic','elegant','modern','retro','noel'].includes(S.deck))S.deck='classic';
+if(!['green','blue','red','casino','xmas'].includes(S.felt))S.felt='xmas';
+if(!['classic','elegant','modern','retro','noel'].includes(S.deck))S.deck='noel';
 document.body.dataset.deck=S.deck;
 document.body.dataset.felt=S.felt;
 const saveS=()=>save('pyr_settings',S);
@@ -1117,7 +1132,7 @@ function fizz(){
     return `<i style="left:${(k*5.6+Math.random()*4).toFixed(1)}%;--s:${s.toFixed(1)}px;--dx:${(Math.random()*40-20).toFixed(0)}px;animation-duration:${d.toFixed(1)}s;animation-delay:-${(Math.random()*d).toFixed(1)}s;opacity:${(.25+Math.random()*.45).toFixed(2)}"></i>`}).join('');
 }
 const BAR_COLOR={green:'#04150f',blue:'#050c20',red:'#17040b',casino:'#0a2a1e',xmas:'#05111e'};
-function barColor(){const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',BAR_COLOR[S.felt]||'#04150f')}
+function barColor(){const c=BAR_COLOR[S.felt]||'#05111e',m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',c);document.documentElement.style.background=c}
 function garland(){
   const g=$('#garland');if(!g||g.childElementCount)return;
   const C=['#ffd27a','#ff4d5e','#8dffb0','#fff1c9','#ffb444','#7fc8ff'];let bulbs='',k=0;
@@ -1859,8 +1874,9 @@ function powerFlash(k){
    L'hôte publie l'écran de la partie dans la base partagée de l'artefact (live/<CODE>).
    Les spectateurs entrent le code et voient le même écran, sans pouvoir toucher à rien. */
 let LDB=null,LIVE={code:null,last:'',busy:false,pending:false,obs:null,tm:null,canWrite:true},SPEC={on:false,unsub:null,code:null,timer:null};
-/* Base temps réel : Firebase si configuré (version hébergée), sinon la base de l'artefact Claude */
-(async()=>{
+/* Base temps réel : Firebase si configuré (version hébergée), sinon la base de l'artefact Claude.
+   Firebase est chargé en fin de page, après l'affichage du jeu : initLDB est appelé une fois ses scripts prêts. */
+async function initLDB(){
   try{
     const cfg=window.FIREBASE_CONFIG;
     if(cfg&&cfg.apiKey&&!/REMPLIR/.test(cfg.apiKey)&&window.firebase){
@@ -1873,7 +1889,9 @@ let LDB=null,LIVE={code:null,last:'',busy:false,pending:false,obs:null,tm:null,c
     }else if(window.claude&&claude.use){LDB=await claude.use('db')}
     if(LDB)document.body.classList.add('live-ok');
   }catch(e){LDB=null}
-})();
+  // une partie lancée avant la fin du chargement récupère son code spectateur
+  if(LDB&&!SPEC.on&&!LIVE.code&&!$('#game').hidden)liveStart();
+}
 const CODECH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const newCode=()=>Array.from({length:4},()=>CODECH[Math.floor(Math.random()*CODECH.length)]).join('');
 /* -- sérialisation : on remplace chaque carte dessinée par un repère léger -- */
@@ -2087,5 +2105,9 @@ function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show'
 
 renderSetup();
 </script>
+<script src="firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>initLDB()</script>
 </body>
 </html>

@@ -96,6 +96,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 ## Apparence
 
 - **Roue crantée en haut à droite** (`appSettings`) : thème, design des cartes, sons.
+- **Démarrage sans flash** : un petit script placé juste après `<body>` lit `pyr_settings` et pose `data-felt`/`data-deck` sur la page avant tout affichage. Il faut le garder aligné avec la liste des thèmes et la règle `noel26`.
 - **Thèmes** (`THEMES`, attribut `body[data-felt]`) : Noël (`xmas`), Absinthe (`green`), Lagon (`blue`), Spritz (`red`) et Casino (`casino`).
   - **Noël est le thème d'accueil** (`DEF.felt='xmas'`, deck `noel`). Les joueurs qui avaient déjà un autre thème y sont basculés une seule fois (drapeau `S.noel26`), puis leur choix est respecté.
   - **Absinthe, Lagon, Spritz et Noël** partagent le style « soirée en verre » : nuit (`--bg0`), 3 lumières qui dérivent (`#amb`, couleurs `--o1`, `--o2`, `--o3`), surfaces en verre dépoli. Pour des raisons historiques, l'accent s'appelle `--gold`/`--gold2`, avec `--onacc` pour le texte posé dessus. Les règles de ce style sont dans le bloc CSS `SOIRÉE EN VERRE`, sous `body:not([data-felt="casino"])`.
@@ -120,7 +121,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 - **Côté spectateur :** l'accueil propose « Regarder une partie », puis le code.
   - Le spectateur reçoit une copie en lecture seule : `expand()` redessine les cartes, les attributs `on*` sont supprimés et tous les événements sont bloqués.
   - La classe `body.spectator` affiche une barre « Spectateur · Quitter ».
-- **Base de données :** Firebase via le SDK compat 10.12.2 chargé depuis gstatic. La config est dans `firebase-config.js`, et un petit adaptateur imite l'API `doc(p).set/onSnapshot`.
+- **Base de données :** Firebase via le SDK compat 10.12.2 chargé depuis gstatic, **en fin de page** pour ne pas retarder l'affichage. `initLDB()` est appelé une fois les scripts chargés. Si une partie a déjà démarré, elle récupère alors son code spectateur. La config est dans `firebase-config.js`, et un petit adaptateur imite l'API `doc(p).set/onSnapshot`.
   - Si la config est absente, l'appli se rabat sur la base des artefacts Claude.
   - Sans aucune des deux, le mode spectateur est désactivé proprement.
 - **Règles Firebase :** voir `database.rules.json`. Seul `live/<CODE>` est accessible, avec un code de 4 caractères et un format d'écriture validé. Ces règles doivent être publiées dans la console Firebase, onglet Realtime Database → Règles.
@@ -146,7 +147,8 @@ Tout est dans un seul fichier : le CSS, puis le HTML, puis un seul script.
 Les autres fichiers :
 - `firebase-config.js` : config web Firebase (publique par nature, la sécurité repose sur les règles) ;
 - `database.rules.json` : règles de sécurité de la base ;
-- `manifest.webmanifest`, `icon-*.png` : installation sur l'écran d'accueil du téléphone (PWA) ;
+- `manifest.webmanifest`, `icon-*.png` : installation sur l'écran d'accueil du téléphone (PWA). L'icône montre un as de cœur, un dos de carte et un shot sur fond de nuit. Pour la refaire, il faut repartir d'une source en 1024 px ;
+- `og-image.jpg` : vignette affichée quand on partage le lien (WhatsApp, Messenger, iMessage…), déclarée par les balises `og:` dans `<head>` ;
 - `README.md` : guide de mise en ligne.
 
 ## Pour tester
@@ -165,3 +167,5 @@ Les autres fichiers :
 - **Classement discret** des gorgées en Inter-Exter et Cheucheuille.
 - **Ordre de pioche** réglable au début du Cheucheuille.
 - **Correctif** : la barre du haut ne déborde plus sur iPhone quand le code spectateur s'affiche.
+- **Correctif** : plus de flash vert au démarrage (thème posé dès l'ouverture, Firebase chargé en fin de page).
+- **Nouvelle icône d'appli** et **vignette de partage du lien**.
