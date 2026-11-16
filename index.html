@@ -245,6 +245,9 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .oitem b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .oitem.drag{transition:none;z-index:5;cursor:grabbing;background:color-mix(in srgb,var(--gold) 22%,rgba(255,255,255,.08));border-color:var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.45)}
 .onum{width:26px;text-align:center;font-weight:800;color:var(--gold)}
+.oitem.onturn{border-color:var(--gold)}
+.oitem b small{display:block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.oitem .pdel{padding:7px 10px;font-size:13px}
 .ogrip{display:grid;gap:3px;padding:8px 2px}.ogrip i{display:block;width:18px;height:2.5px;border-radius:2px;background:rgba(255,255,255,.45)}
 @media (max-width:380px){.rkh,.rkr{grid-template-columns:26px minmax(0,1fr) 66px 66px;gap:6px}.rkr{font-size:16px}}
 .gpop{position:fixed;z-index:30;width:min(340px,calc(100vw - 20px));padding:12px;border-radius:22px;color:var(--ink);
@@ -1757,9 +1760,9 @@ function showRank(){
 }
 
 /* ================= ORDRE DE PIOCHE (Cheucheuille) : on glisse un nom pour le déplacer ================= */
-let ORD=[];
+let ORD=[],ORDMID=false;
 function chuOrder(){
-  ORD=names.map((_,i)=>i);
+  ORD=names.map((_,i)=>i);ORDMID=false;
   modal(`<h2>Ordre de pioche</h2><p class="hint" style="margin-top:2px">Glisse un nom vers le haut ou le bas pour changer l'ordre.</p>
   <div class="olist" id="olist"></div>
   <button class="btn gold block lg" style="margin-top:14px" onclick="chuOrderOk()">C'est parti</button>`,true);
@@ -1767,10 +1770,11 @@ function chuOrder(){
 }
 function drawOrder(){
   const L=$('#olist');if(!L)return;
-  L.innerHTML=ORD.map((i,k)=>`<div class="oitem" data-k="${k}"><span class="onum">${k+1}</span>${av(i)}<b>${esc(names[i])}</b><span class="ogrip" aria-hidden="true"><i></i><i></i><i></i></span></div>`).join('');
+  L.innerHTML=ORD.map((i,k)=>`<div class="oitem${ORDMID&&i===CH.turn?' onturn':''}" data-k="${k}"><span class="onum">${k+1}</span>${av(i)}<b>${esc(names[i])}${ORDMID&&i===CH.turn?'<small>à toi</small>':''}</b>${ORDMID&&names.length>2?`<button class="pdel" onclick="removeMid(${i})" aria-label="Retirer ${esc(names[i])}">Retirer</button>`:''}<span class="ogrip" aria-hidden="true"><i></i><i></i><i></i></span></div>`).join('');
   L.querySelectorAll('.oitem').forEach(el=>el.addEventListener('pointerdown',dragStart));
 }
 function dragStart(e){
+  if(e.target.closest('.pdel'))return;
   const el=e.currentTarget,L=$('#olist'),sh=$('#sheet'),items=[...L.children],from=+el.dataset.k,hgt=el.offsetHeight+8;
   let y0=e.clientY,dy=0,to=from,sc0=sh.scrollTop,raf=null,lastY=e.clientY;
   el.setPointerCapture(e.pointerId);el.classList.add('drag');vib(10);
@@ -1785,7 +1789,7 @@ function dragStart(e){
   raf=requestAnimationFrame(auto);
   const end=()=>{
     cancelAnimationFrame(raf);el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',end);el.removeEventListener('pointercancel',end);
-    if(to!==from){const [x]=ORD.splice(from,1);ORD.splice(to,0,x);sfx.tap();vib(8)}
+    if(to!==from){if(ORDMID){moveMid(from,to);return}const [x]=ORD.splice(from,1);ORD.splice(to,0,x);sfx.tap();vib(8)}
     drawOrder();
   };
   el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
@@ -2268,10 +2272,20 @@ async function shareRecap(){
 const canEditPlayers=()=>!OVER&&(MODE==='chu'||(MODE==='ie'&&IE.ph==='board'));
 function playersEdit(){
   if(!canEditPlayers())return;
-  modal(`<h2>Joueurs</h2><p class="hint" style="margin-top:2px">Quelqu'un arrive ou s'en va ? La partie continue.</p>
-  <div class="olist">${names.map((n,i)=>`<div class="oitem" style="touch-action:auto;cursor:default">${av(i)}<b>${esc(n)}</b>${names.length>2?`<button class="pdel" onclick="removeMid(${i})" aria-label="Retirer ${esc(n)}">Retirer</button>`:''}</div>`).join('')}</div>
+  const chu=MODE==='chu';ORDMID=chu;ORD=names.map((_,i)=>i);
+  modal(`<h2>Joueurs</h2><p class="hint" style="margin-top:2px">${chu?'Quelqu\'un arrive ou s\'en va ? Glisse un nom pour changer l\'ordre de pioche.':'Quelqu\'un arrive ou s\'en va ? La partie continue.'}</p>
+  ${chu?'<div class="olist" id="olist"></div>':`<div class="olist">${names.map((n,i)=>`<div class="oitem" style="touch-action:auto;cursor:default">${av(i)}<b>${esc(n)}</b>${names.length>2?`<button class="pdel" onclick="removeMid(${i})" aria-label="Retirer ${esc(n)}">Retirer</button>`:''}</div>`).join('')}</div>`}
   ${names.length<MAXP?`<form class="addrow" style="margin-top:14px" onsubmit="event.preventDefault();addMid()"><input id="midName" placeholder="Prénom du nouveau" maxlength="14" autocomplete="off" autocapitalize="words" enterkeyhint="done"><button class="btn gold" type="submit">Ajouter</button></form>`:''}
-  <p class="hint" style="font-size:13px;margin-top:10px">${MODE==='chu'?'Le nouveau joueur pioche en dernier dans le tour.':'Le nouveau joueur reçoit 4 cartes au hasard.'}</p>`);
+  <p class="hint" style="font-size:13px;margin-top:10px">${chu?'Le nouveau joueur pioche en dernier. Celui dont c\'est le tour garde la main, même déplacé.':'Le nouveau joueur reçoit 4 cartes au hasard.'}</p>`);
+  if(chu)drawOrder();
+}
+/* déplacer un joueur dans l'ordre de pioche en cours de partie : chacun garde ses compteurs, ses pouvoirs, et le tour reste au même joueur */
+function moveMid(from,to){
+  snap();const perm=names.map((_,i)=>i);const [x]=perm.splice(from,1);perm.splice(to,0,x);
+  const inv=[];perm.forEach((o,k)=>inv[o]=k);const map=v=>v==null?v:inv[v];
+  names=perm.map(i=>names[i]);ST=perm.map(i=>ST[i]);
+  CH.turn=map(CH.turn);for(const k in CH.holders)CH.holders[k]=map(CH.holders[k]);CH.lastDrawer=map(CH.lastDrawer);
+  save('pyr_names',names);sfx.tap();vib(8);render();saveGame();playersEdit();
 }
 function addMid(){
   const inp=$('#midName');let v=(inp&&inp.value||'').trim().replace(/\s+/g,' ').slice(0,14);
