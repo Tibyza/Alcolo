@@ -1,13 +1,15 @@
 /* ============================================================
-   CONFIG FIREBASE : colle ici la config web de ton projet
-   (console Firebase > Paramètres du projet > Vos applications > </> Web).
+   CONFIG FIREBASE du projet alcolo-21d86
+   (console Firebase > Paramètres du projet > Vos applications > Web).
    Ces clés sont publiques par nature : elles peuvent être sur GitHub.
-   Tant que apiKey vaut "A_REMPLIR", le jeu marche, mais sans mode spectateur.
+   La sécurité vient des règles de la Realtime Database (database.rules.json).
    ============================================================ */
 window.FIREBASE_CONFIG = {
-  apiKey: "A_REMPLIR",
-  authDomain: "A_REMPLIR.firebaseapp.com",
-  databaseURL: "https://A_REMPLIR-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "A_REMPLIR",
-  appId: "A_REMPLIR"
+  apiKey: "AIzaSyCb4bDOdZ-8M6dU8Xrl2uIxsGkG5e9_zbU",
+  authDomain: "alcolo-21d86.firebaseapp.com",
+  databaseURL: "https://alcolo-21d86-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "alcolo-21d86",
+  storageBucket: "alcolo-21d86.firebasestorage.app",
+  messagingSenderId: "227353612678",
+  appId: "1:227353612678:web:3516b53c2d2b42146bdc07"
 };
