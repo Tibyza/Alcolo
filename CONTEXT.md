@@ -87,11 +87,20 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
 - Réglages : gorgées du Valet (2 ou 3), gorgées de la Dame (1 ou 2), trou dans le cercle (cul sec ou pas de pénalité).
 - Au lancement, une fenêtre **Ordre de pioche** montre les joueurs dans l'ordre. On glisse un nom pour le déplacer (`chuOrder`, `dragStart`, `chuOrderOk`), et le nouvel ordre est enregistré dans la liste des joueurs.
 
+### Pendant toutes les parties
+- **Reprise** : l'état complet de la partie est enregistré à chaque étape dans le localStorage `pyr_game` (`getState`, `setState`, `saveGame`). À la réouverture de l'appli, `resumeAsk()` propose « Reprendre la partie » si une partie de moins de 12 h n'est pas terminée. La sauvegarde est effacée en fin de partie (`onGameOver`) et au retour à l'accueil (`toSetup`). Le code spectateur est conservé quand c'est possible (`LIVE.resume`).
+- **Annuler** : avant chaque action importante (retourner une carte, répondre en Inter-Exter, piocher, vérifier un bluff, juger une annonce, ajouter ou retirer un joueur, « qui a perdu »), `snap()` garde l'état. Un bouton « Annuler » (`#undoBtn`, hors de `#game`, donc jamais envoyé aux spectateurs) reste 9 s et ramène un coup en arrière (`undo`).
+- **Joueurs en cours de partie** (Cheucheuille, et Inter-Exter une fois au plateau) : `playersEdit`, `addMid`, `removeMid`. En Cheucheuille, le nouveau venu pioche en dernier. En Inter-Exter, il reçoit 4 cartes au hasard.
+- **Fin de partie** : `onGameOver()` lance au bout de 3 s une **pause eau** (`waterBreak`), avec un message tiré au hasard parmi 4 (`WATER`), jamais deux fois le même d'affilée. La barre de fin propose Accueil · **Récap** · Rejouer (`endDock`).
+- **Récap** (`showRecap`, `recapTitles`) : des titres décalés (L'éponge, Le mécène, Le fantôme, Le plongeur, Le cocktail maison, Démasqué, Le suspect idéal, Le discret, Le héros de la soirée pour le SAM). « Partager » dessine une image au format story de 1080 × 1920 aux couleurs du thème (`shareRecap`), envoyée par le partage du téléphone ou téléchargée.
+
 ### Classement des gorgées (Inter-Exter et Cheucheuille)
 - Le bouton podium `#rankBtn`, dans la barre du haut, ouvre la pop-up `showRank()`. On peut trier par « Qui a le plus bu » ou « Qui a le plus donné ». Les culs secs sont comptés à part.
 - Les compteurs `ST[i] = {bu, cs, don, dcs}` sont remis à zéro à chaque partie (`resetStats`) et alimentés par `addSt` :
   - Inter-Exter : chaque réponse (bonne = donne, mauvaise = boit), puis chaque carte du plateau pour ceux qui ont la valeur.
-  - Cheucheuille : seulement ce que l'appli sait avec certitude, c'est-à-dire As, trou et 4e Roi (cul sec), 6 et 8 (1 gorgée, comptée comme donnée par le tireur) et 7 (1 gorgée pour tous). Les gages de la valise, du Valet, de la Dame et du 10 ne sont pas comptés.
+  - Cheucheuille : As, trou et 4e Roi (cul sec), 6 et 8 (1 gorgée, comptée comme donnée par le tireur), 7 (1 gorgée pour tous). Pour la valise (bouton « Qui a perdu ? » sur la carte 3) et pour les pouvoirs Valet, Dame et 10 (fenêtre ouverte après le pouvoir), on touche le perdant : `lostAsk`, `lostPick`. Le perdant boit, et le détenteur du pouvoir « donne ».
+  - Pyramide (pas de bouton podium, seulement pour le récap) : `bl` compte les bluffs démasqués, `inno` les accusations à tort, `cs` les culs secs (annonce ratée, sommet).
+  - `ST[i]` contient `{bu, cs, don, dcs, bl, inno}` (`ZST()`).
 
 ## Apparence
 
@@ -110,7 +119,7 @@ L'accueil propose trois modes. Choisir un mode change le titre et l'aperçu en h
   - Le deck Noël a un sapin au dos, le Père Noël en Roi, la Mère Noël en Dame, un renne en Valet et un cadeau pour l'As.
 - Le choix du deck change aussi les cartes affichées sur l'accueil (`renderFan`).
 - **Boutons en verre** (style « liquid glass ») : fond translucide flouté, reflet en haut, liseré clair. Le bouton principal garde la classe `.btn.gold` : il est éclairé par la couleur d'accent du thème, et redevient doré en Casino. Rouge et vert restent pour Bluff / Non / Oui, en verre teinté.
-- **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). On la change en touchant le joueur sur l'accueil : un petit encart s'ouvre avec les 6 boissons (`glassPick`, `setGlass`, élément `#gpop`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
+- **Verre de chaque joueur** : à la place d'un rond coloré avec l'initiale, chaque joueur a une boisson (`GLASS_ORDER` : shot par défaut, bière, vin, champagne, cocktail, whisky), dessinée en SVG (`GLASS_SVG`, `drinkSVG`, `av`). Les boissons **Soft** et **SAM** (logo voiture, pour celui qui conduit) sont sans alcool : `isSoft(i)`. Une petite mention `softTag(i)` (« soft » ou « SAM · soft ») s'affiche à côté du prénom quand il doit boire. On change la boisson en touchant le joueur sur l'accueil : un petit encart s'ouvre avec les 6 boissons (`glassPick`, `setGlass`, élément `#gpop`). Elle est retenue par prénom dans le localStorage `pyr_glasses`.
 
 ## Mode spectateur (miroir)
 
@@ -140,7 +149,8 @@ Tout est dans un seul fichier : le CSS, puis le HTML, puis un seul script.
 | Partie (commun) | `start`, `render`, `next`, `flyReveal`, `bigCard`, `stage()`, `modal()`, `lock()` (anti double tap) |
 | Pyramide | `startClassic`, `buildPyr`, `decorTree`, `cFlip`, `showReveal`, `bluffPicker`, `liarCheck`, `bindHold`, `showHand`, `startAnnounce`, `annStep`, `annJudge`, `showSummit` |
 | Inter-Exter | `startIE`, `renderQuiz`, `answer`, `nextPlayer`, `renderIEBoard`, `ieNext`, `showIEReveal` |
-| Classement | `ST`, `resetStats`, `addSt`, `showRank`, bouton `#rankBtn` |
+| Classement | `ST`, `ZST`, `resetStats`, `addSt`, `showRank`, bouton `#rankBtn` |
+| Reprise, annulation, fin | `getState`, `setState`, `saveGame`, `resumeAsk`, `resumeGame`, `snap`, `undo`, `onGameOver`, `waterBreak`, `showRecap`, `shareRecap`, `playersEdit`, `lostAsk` |
 | Cheucheuille | `startChu`, `chuOrder`, `dragStart`, `chuOrderOk`, `renderChu`, `chuDraw`, `chuRule`, `gapCount`, `showChuReveal` |
 | Spectateur | `liveStart`, `livePush`, `liveStop`, `joinAsk`, `specStart`, `specRender`, `specStop` |
 
@@ -153,7 +163,7 @@ Les autres fichiers :
 
 ## Pour tester
 
-- **En local :** ouvrir `index.html` dans un navigateur suffit. Le mode spectateur demande une connexion internet.
+- **En local :** ouvrir `index.html` dans un navigateur suffit. Le mode spectateur demande une connexion internet. Pour les tests automatiques de la reprise, mieux vaut servir le dossier par un petit serveur (`python3 -m http.server`) plutôt qu'en `file://` : le stockage du navigateur de test y est peu fiable d'un rechargement à l'autre.
 - **Sur téléphone :** utiliser l'adresse d'aperçu de `test`. Tester en portrait et en paysage, avec plusieurs joueurs, et vérifier que les boutons principaux restent visibles sans défiler.
 - **Tester chaque thème** (Noël, Absinthe, Lagon, Spritz, Casino), car le style Casino est séparé des autres. Vérifier aussi que la page ne dépasse jamais en largeur, surtout la barre du haut quand le code spectateur s'affiche.
 
@@ -169,3 +179,5 @@ Les autres fichiers :
 - **Correctif** : la barre du haut ne déborde plus sur iPhone quand le code spectateur s'affiche.
 - **Correctif** : plus de flash vert au démarrage (thème posé dès l'ouverture, Firebase chargé en fin de page).
 - **Nouvelle icône d'appli** et **vignette de partage du lien**.
+- **Reprise de partie**, bouton **Annuler**, **joueurs en cours de partie**.
+- Boissons **Soft** et **SAM**, **pause eau** en fin de partie, **récap** avec image à partager, « **Qui a perdu ?** » au Cheucheuille.

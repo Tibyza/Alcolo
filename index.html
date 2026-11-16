@@ -247,7 +247,7 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .onum{width:26px;text-align:center;font-weight:800;color:var(--gold)}
 .ogrip{display:grid;gap:3px;padding:8px 2px}.ogrip i{display:block;width:18px;height:2.5px;border-radius:2px;background:rgba(255,255,255,.45)}
 @media (max-width:380px){.rkh,.rkr{grid-template-columns:26px minmax(0,1fr) 66px 66px;gap:6px}.rkr{font-size:16px}}
-.gpop{position:fixed;z-index:30;width:min(300px,calc(100vw - 20px));padding:12px;border-radius:22px;color:var(--ink);
+.gpop{position:fixed;z-index:30;width:min(340px,calc(100vw - 20px));padding:12px;border-radius:22px;color:var(--ink);
   background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05)),color-mix(in srgb,var(--deep) 88%,transparent);
   -webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
   border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.5);animation:gpin .18s ease-out;transform-origin:var(--ax) 0}
@@ -257,7 +257,9 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .gpop.up:before{top:auto;bottom:-7px;transform:rotate(225deg)}
 @keyframes gpin{from{opacity:0;transform:scale(.85)}}
 .gptitle{font-size:14px;color:var(--mute);text-align:center;margin:0 0 10px}.gptitle b{color:var(--ink)}
-.gpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gpgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.gpopt.nob{background:rgba(120,200,255,.08)}
+.gpopt span{font-size:12px;line-height:1.15;text-align:center}
 .gpopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:16px;font-weight:700;font-size:13px;
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);transition:transform .1s}
 .gpopt:active{transform:scale(.93)}
@@ -665,6 +667,48 @@ body[data-felt="xmas"] .btn.red{background:linear-gradient(180deg,rgba(226,52,78
 @keyframes twink{50%{opacity:.45;box-shadow:0 0 4px var(--c)}}
 @media (prefers-reduced-motion:reduce){.garland b{animation:none}#snow{display:none}}
 #snow i{text-shadow:0 0 6px rgba(255,255,255,.8)}
+
+/* ---------- Annuler, pause eau, récap, joueurs en cours de partie ---------- */
+.undo{position:fixed;left:14px;bottom:calc(112px + env(safe-area-inset-bottom));z-index:21;display:flex;align-items:center;gap:6px;height:44px;padding:0 16px 0 12px;border-radius:999px;
+  font-weight:800;font-size:15px;color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.08)),rgba(10,14,22,.55);border:1px solid rgba(255,255,255,.35);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 22px rgba(0,0,0,.4);
+  opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .2s,transform .2s}
+.undo.show{opacity:1;transform:none;pointer-events:auto}
+body:has(#modal .olist) .undo{bottom:auto;top:calc(12px + env(safe-area-inset-top))}
+body:has(#stage .stage) .undo{bottom:auto;top:calc(18px + env(safe-area-inset-top));left:16px}
+@media (max-width:360px){body:has(#stage .stage) .undo{font-size:0;gap:0;padding:0;width:44px;justify-content:center}}
+@media (orientation:landscape) and (max-height:540px){body:has(#stage .stage) .undo{top:auto;bottom:calc(12px + env(safe-area-inset-bottom))}}
+.undo svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.undo:active{transform:scale(.95)}
+body.spectator .undo,body.spectator .water{display:none}
+@media (orientation:landscape) and (max-height:540px){.undo{bottom:calc(12px + env(safe-area-inset-bottom))}}
+body[data-felt="casino"] .undo{background:rgba(2,22,14,.85);border-color:var(--goldline);color:var(--gold);-webkit-backdrop-filter:none;backdrop-filter:none}
+.water{position:fixed;inset:0;z-index:45;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:fade .25s}
+.wcard{width:min(380px,100%);text-align:center;padding:26px 22px 20px;border-radius:30px;color:var(--ink);
+  background:linear-gradient(160deg,rgba(255,255,255,.18),rgba(255,255,255,.05)),color-mix(in srgb,var(--deep) 90%,transparent);border:1px solid rgba(255,255,255,.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 30px 60px rgba(0,0,0,.5);animation:pop .45s cubic-bezier(.2,.9,.3,1.2) both}
+.wglass{width:84px;height:105px;margin:0 auto 6px;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+.wglass .wg{fill:rgba(255,255,255,.12);stroke:#fff;stroke-width:3;stroke-linejoin:round}
+.wglass .wl{fill:#6fc7ff;opacity:.85;animation:slosh 2.6s ease-in-out infinite;transform-origin:50% 100%}
+.wglass .wb{fill:#fff;opacity:.8}
+@keyframes slosh{50%{transform:skewY(-3deg)}}
+.wt{font-family:'Playfair Display',Georgia,serif;font-weight:900;font-size:clamp(28px,8vw,38px);line-height:1.08;margin:6px 0 4px}
+.wcard .hint{margin:8px 0 18px}
+body[data-felt="casino"] .wcard{background:linear-gradient(180deg,var(--deep),var(--deep2));border-color:var(--goldline)}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.row3 .btn{padding-left:6px;padding-right:6px;font-size:16px;display:flex;align-items:center;justify-content:center;gap:2px}
+.row3 .btn .ico{margin-right:4px}
+@media (max-width:360px){.row3 .btn .ico{display:none}}
+.rcp{display:grid;gap:10px;margin-top:6px}
+.rct{padding:14px 16px;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.rct.sam{border-color:rgba(120,190,255,.5);background:linear-gradient(160deg,rgba(120,190,255,.18),rgba(120,190,255,.05))}
+.rck{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.rcn{display:flex;align-items:center;gap:6px;margin:6px 0 4px;font-size:21px;flex-wrap:wrap}.rcn .av{width:32px;height:32px}
+.rct p{margin:0;color:color-mix(in srgb,var(--mute) 70%,#fff);font-size:15px;line-height:1.4}
+.softtag{font-style:normal;font-size:.72em;font-weight:800;padding:1px 7px;border-radius:999px;background:rgba(120,190,255,.2);color:#bfe2ff;vertical-align:2px;white-space:nowrap}
+.pdel{margin-left:auto;padding:8px 12px;border-radius:12px;font-weight:800;font-size:14px;color:#ffb3ba;background:rgba(239,77,90,.14);border:1px solid rgba(239,77,90,.35)}
+.pedit{border:1px solid rgba(255,255,255,.2);cursor:pointer;color:var(--ink)}
+.lostbtn{margin:12px auto 0;display:inline-flex;padding:11px 20px}
 /* ---------- Tablette / iPad ---------- */
 @media (min-width:700px){
   :root{--cw:min(calc((100vw - 200px) / (var(--rows,6) + .6)),calc((var(--vh,100vh) - 280px) / (var(--rows,6) * 1.5)),96px);--bigmax:470px}
@@ -827,6 +871,7 @@ const ICON={
   zoom:'<svg class="ico" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
   replay:'<svg class="ico" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/></svg>',
   home:'<svg class="ico" viewBox="0 0 24 24"><path d="M4 11 12 4.5 20 11M6.5 9.5V19.5h11V9.5"/></svg>',
+  star:'<svg class="ico" viewBox="0 0 24 24"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9 1 5.6-5.1-2.7-5 2.7.9-5.6-4-3.9 5.6-.8z"/></svg>',
   mic:'<svg class="ico" viewBox="0 0 24 24"><rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M6 11.5a6 6 0 0 0 12 0M12 17.5v3"/></svg>',
   eye:'<svg class="ico" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   pyr:'<svg class="mico" viewBox="0 0 40 32"><g fill="currentColor" opacity=".9"><rect x="16.5" y="2" width="7" height="8.5" rx="1"/><rect x="12" y="11.5" width="7" height="8.5" rx="1"/><rect x="21" y="11.5" width="7" height="8.5" rx="1"/><rect x="7.5" y="21" width="7" height="8.5" rx="1"/><rect x="16.5" y="21" width="7" height="8.5" rx="1"/><rect x="25.5" y="21" width="7" height="8.5" rx="1"/></g></svg>',
@@ -854,8 +899,8 @@ const saveS=()=>save('pyr_settings',S);
 
 let MODE='classic';
 /* Chaque joueur a son verre (shot par défaut), retenu par prénom */
-const GLASS_ORDER=['shot','biere','vin','flute','cocktail','whisky'];
-const GLASS_NAME={shot:'Shot',biere:'Bière',vin:'Vin',flute:'Champagne',cocktail:'Cocktail',whisky:'Whisky'};
+const GLASS_ORDER=['shot','biere','vin','flute','cocktail','whisky','soft','sam'];
+const GLASS_NAME={shot:'Shot',biere:'Bière',vin:'Vin',flute:'Champagne',cocktail:'Cocktail',whisky:'Whisky',soft:'Soft',sam:'SAM'};
 const GSTEM='<path class="gs" d="M16 18.5V27M11 27.5h10"/>';
 const GLASS_SVG={
   shot:'<path class="gq" d="M10.3 13h11.4l-.95 11.3H11.25z" fill="#e9a23b"/><path class="gg" d="M8.8 6.5h14.4L21.4 27.5H10.6z"/><path class="gs" d="M10.4 24.6h11.2"/>',
@@ -863,6 +908,8 @@ const GLASS_SVG={
   vin:'<path class="gq" d="M9.5 9.5h13c-.3 4-2.9 6.4-6.5 6.4s-6.2-2.4-6.5-6.4z" fill="#a3203a"/><path class="gg" d="M9 4h14c.4 8.2-2.4 13-7 13s-7.4-4.8-7-13z"/>'+GSTEM,
   flute:'<path class="gq" d="M13.1 7.5h5.8l-.6 9.3c-.1 1.4-1 2.2-2.3 2.2s-2.2-.8-2.3-2.2z" fill="#f2d98a"/><path class="gg" d="M12.4 3h7.2l-.8 13.9c-.1 1.9-1.3 3-2.8 3s-2.7-1.1-2.8-3z"/><circle class="gb" cx="15.3" cy="15" r=".55"/><circle class="gb" cx="16.6" cy="11.8" r=".5"/><circle class="gb" cx="15.7" cy="9.4" r=".45"/><path class="gs" d="M16 19.9V27M11.5 27.5h9"/>',
   cocktail:'<path class="gq" d="M8.6 8.9h14.8L16 16.6z" fill="#ff6f8e"/><path class="gg" d="M5.5 5.5h21L16 17.5z"/><path class="gs" d="M16 17.5V27M11 27.5h10M20.5 3.2l-3.6 7"/><circle cx="21" cy="3.4" r="1.7" fill="#d62f45"/>',
+  soft:'<path class="gq" d="M10.4 11.5h11.2l-.95 14.6H11.35z" fill="#5c2814"/><rect class="gi" x="12" y="12.6" width="4.4" height="4.4" rx=".9" transform="rotate(-10 14.2 14.8)"/><rect class="gi" x="16.4" y="15.2" width="4" height="4" rx=".9" transform="rotate(12 18.4 17.2)"/><circle class="gb" cx="14.5" cy="22" r=".8"/><circle class="gb" cx="18" cy="20.5" r=".6"/><path d="M19.6 2.8 17.2 21" stroke="#ff5a4e" stroke-width="1.7" stroke-linecap="round"/><path class="gg" d="M9.6 6.5h12.8l-1.3 21H10.9z"/><circle cx="21.6" cy="7.2" r="2.6" fill="#f6d23c" stroke="#d9a90e" stroke-width=".7"/>',
+  sam:'<path d="M4.2 21.6v-4.3c0-1 .6-1.8 1.6-2.1l2.8-.9 2.7-4.5c.4-.7 1.1-1.1 1.9-1.1h6.9c.8 0 1.5.4 1.9 1l3.1 4.5 2.4.7c.9.3 1.6 1.1 1.6 2.1v4.6c0 .6-.4 1-1 1H5.2c-.6 0-1-.4-1-1z" fill="#3d8bff" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M12.4 14.2l1.9-3.3c.2-.3.5-.5.9-.5h2.9v3.8zM20 10.4h1.9c.3 0 .6.2.8.4l2.2 3.4H20z" fill="#d8ecff"/><path d="M4.4 18.6h2.6M25.2 18.6h2.4" stroke="#ffe08a" stroke-width="1.5" stroke-linecap="round"/><circle cx="10.2" cy="22.8" r="2.9" fill="#1b1f26" stroke="currentColor" stroke-width="1.1"/><circle cx="22" cy="22.8" r="2.9" fill="#1b1f26" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="22.8" r="1" fill="#9aa4b2"/><circle cx="22" cy="22.8" r="1" fill="#9aa4b2"/>',
   whisky:'<path class="gq" d="M8.9 16.5h14.2l-.6 9.3H9.5z" fill="#c4742a"/><rect class="gi" x="11.5" y="13.2" width="5.4" height="5.4" rx="1" transform="rotate(-12 14.2 15.9)"/><rect class="gi" x="16" y="15.4" width="4.6" height="4.6" rx="1" transform="rotate(14 18.3 17.7)"/><path class="gg" d="M7.6 9.5h16.8l-1.2 18H8.8z"/><path class="gs" d="M9 25.8h14"/>'
 };
 let GLASSES=load('pyr_glasses',{});if(!GLASSES||typeof GLASSES!=='object'||Array.isArray(GLASSES))GLASSES={};
@@ -875,7 +922,7 @@ function glassPick(i,btn){
   const n=names[i];if(n==null)return;sfx.tap();
   const cur=glassOf(n),el=document.createElement('div');el.id='gpop';el.className='gpop';el.dataset.i=i;
   el.innerHTML=`<div class="gptitle">La boisson de <b>${esc(n)}</b></div><div class="gpgrid">${GLASS_ORDER.map(g=>
-    `<button type="button" class="gpopt${g===cur?' on':''}" onclick="setGlass(${i},'${g}')">${drinkSVG(g)}<span>${GLASS_NAME[g]}</span></button>`).join('')}</div>`;
+    `<button type="button" class="gpopt${g===cur?' on':''}${g==='soft'||g==='sam'?' nob':''}" onclick="setGlass(${i},'${g}')">${drinkSVG(g)}<span>${g==='sam'?'SAM (conduit)':GLASS_NAME[g]}</span></button>`).join('')}</div>`;
   document.body.appendChild(el);
   const r=btn.getBoundingClientRect(),W=el.offsetWidth,H=el.offsetHeight,vw=document.documentElement.clientWidth;
   let x=Math.max(10,Math.min(r.left+r.width/2-W/2,vw-W-10)),y=r.bottom+8;
@@ -1213,16 +1260,21 @@ async function keepAwake(){try{if('wakeLock' in navigator&&!wl){wl=await navigat
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!$('#game').hidden)keepAwake()});
 
 /* ================= Lancement ================= */
-function start(){
-  if(!S.mode)return;
+function enterGame(){
   keepAwake();closeModal();closeStage();ac();
-  MODE=S.mode;document.body.classList.toggle('classic',MODE==='classic');
+  document.body.classList.toggle('classic',MODE==='classic');
   $('#gTitle').textContent={classic:'La Pyramide',ie:'Inter-Exter',chu:'Cheucheuille'}[MODE];
   $('#peekBtn').hidden=MODE!=='classic'||!S.classic.peek;
   updSound();
   $('#setup').hidden=true;$('#game').hidden=false;$('#dock').hidden=false;document.body.classList.add('ingame');
+  $('#rankBtn').hidden=MODE==='classic';
+}
+function start(){
+  if(!S.mode)return;
+  MODE=S.mode;OVER=false;clearUndo();clearTimeout(waterT);document.querySelectorAll('.water').forEach(e=>e.remove());LIVE.resume=null;
+  enterGame();
   if(MODE==='classic')startClassic();else if(MODE==='chu')startChu();else startIE();
-  resetStats();$('#rankBtn').hidden=MODE==='classic';
+  resetStats();
   render();window.scrollTo(0,0);
   if(MODE==='chu'&&names.length>1)setTimeout(chuOrder,350);
   liveStart();
@@ -1239,7 +1291,7 @@ function flyReveal(sel,card,prepare,done){
   slot.classList.add('shake');sfx.drum();vib([15,110,15,90,15,70,15,40,20]);
   setTimeout(()=>{
     const from=slot.getBoundingClientRect();
-    prepare();
+    prepare();saveGame();
     const st=$('#stage .stage'),bw=$('#bigwrap');
     if(!st||!bw){slot.classList.remove('shake');done();return}
     st.style.opacity='0';st.style.animation='none';
@@ -1285,14 +1337,14 @@ function startClassic(){
   buildPyr();
   setTimeout(()=>memo(0),700);
 }
-function buildPyr(){
+function buildPyr(still=false){
   const starts=[];let a=0;ROWS.forEach(n=>{starts.push(a);a+=n});
   let html='';
   for(let r=ROWS.length-1;r>=0;r--){
     let cells='';
     for(let k=0;k<ROWS[r];k++){
       const i=starts[r]+k;
-      cells+=`<div class="slot" data-i="${i}" style="--d:${i*28}ms" onclick="if(${i}===flipped)cFlip()"><div class="flip"><div class="side back cardback"></div><div class="side front">${face(pyr[i])}</div></div></div>`;
+      cells+=`<div class="slot${still?' nodeal':''}" data-i="${i}" style="--d:${i*28}ms" onclick="if(${i}===flipped)cFlip()"><div class="flip"><div class="side back cardback"></div><div class="side front">${face(pyr[i])}</div></div></div>`;
     }
     html+=`<div class="prow" data-r="${r}"><span class="lab">${isSummitRow(r)?ic('glass'):rowSips(r)}</span>${cells}</div>`;
   }
@@ -1336,7 +1388,7 @@ function decorTree(){
   P.insertAdjacentHTML('afterbegin',back);P.insertAdjacentHTML('beforeend',front);
 }
 let treeT;window.addEventListener('resize',()=>{clearTimeout(treeT);treeT=setTimeout(decorTree,150)});
-function renderClassic(){updatePyr();renderAction();renderDock();$('#extra').innerHTML=''}
+function renderClassic(){updatePyr();renderAction();renderDock();$('#extra').innerHTML='';saveGame()}
 function updatePyr(){
   document.querySelectorAll('.slot[data-i]').forEach(el=>{
     const i=+el.dataset.i;
@@ -1353,11 +1405,12 @@ function updatePyr(){
 function cFlip(){
   if(locked()||flipped>=TOTAL)return;
   if(SUMMIT&&flipped===TOTAL-1&&!validated){startAnnounce();return}
-  lock(1900);
+  snap();lock(1900);
   const idx=flipped;
   flyReveal(`.slot[data-i="${idx}"]`,pyr[idx],()=>{
     flipped=idx+1;checked={};phase=(SUMMIT&&flipped===TOTAL)?'final':'card';
-    if(phase==='final')showSummit(true);else showReveal();
+    if(phase==='final'){showSummit(true);summitHit.forEach(i=>addSt(i,'cs'))}else showReveal();
+    if(flipped>=TOTAL)onGameOver();
   },()=>{
     renderClassic();
     if(phase==='final')(summitHit.length?sfx.fanfare():sfx.good());
@@ -1387,7 +1440,7 @@ function bluffButtons(){
     if(i in checked)return `<button class="pbtn done" disabled>${av(i)}<span>${esc(nm)}</span>${checked[i]?'<b class="ok">✓ vrai</b>':'<b class="bad">bluff</b>'}</button>`;
     return `<button class="pbtn" onclick="liarCheck(${i})">${av(i)}<span>${esc(nm)}</span></button>`}).join('');
 }
-function endDock(){return `<div class="row2"><button class="btn lg" onclick="playersAsk()">${ic('home')}Accueil</button><button class="btn gold lg" onclick="replayAsk()">${ic('replay')}Rejouer</button></div>`}
+function endDock(){return `<div class="row3"><button class="btn lg" onclick="playersAsk()">${ic('home')}Accueil</button><button class="btn lg" onclick="showRecap()">${ic('star')}Récap</button><button class="btn gold lg" onclick="replayAsk()">${ic('replay')}Rejouer</button></div>`}
 function renderDock(){
   const D=$('#dockIn');
   if(phase==='idle'){D.innerHTML=`<button class="btn gold block lg" onclick="cFlip()">Retourner la première carte</button>`;return}
@@ -1415,14 +1468,15 @@ function bluffPicker(){
   <div class="pgrid" style="margin-top:0">${bluffButtons()}</div>`);
 }
 function liarCheck(g){
+  if(g in checked)return;snap();
   const c=pyr[flipped-1],n=rowSips(rowOf(flipped-1))*2,m=hands[g].filter(h=>h.r===c.r),G=esc(names[g]);
-  checked[g]=m.length>0;
+  checked[g]=m.length>0;if(m.length)addSt(g,'inno');else{addSt(g,'bl');addSt(g,'bu',n)}saveGame();
   if(!$('#stage').innerHTML)renderClassic();
   m.length?sfx.good():sfx.bad();vib(m.length?30:[40,60,40]);
   modal(`<div class="center"><div class="kicker">Vérification</div><div class="who">${av(g)} ${G}</div>
   <div class="hand">${m.length?m.map(h=>face(h,'lg hl pop')).join(''):`<div class="nocard">Aucun ${rn(c.r)}</div>`}</div>
   ${m.length?`<div class="verdict ok">${G} disait vrai !<small>Celui qui a accusé boit ${n} gorgées</small></div>`
-            :`<div class="verdict bad">Bluff démasqué !<small>${G} boit ${n} gorgées</small></div>`}
+            :`<div class="verdict bad">Bluff démasqué !<small>${G}${softTag(g)} boit ${n} gorgées</small></div>`}
   <div class="row2"><button class="btn lg" onclick="closeModal();render()">OK</button>${flipped<TOTAL?`<button class="btn gold lg" onclick="cFlip()">${SUMMIT&&flipped===TOTAL-1?'Annonces':'Suivante →'}</button>`:''}</div></div>`);
 }
 
@@ -1519,8 +1573,8 @@ function annStep(rev){
 function annBack(){if(valI<=0)return;valI--;annErr=annErr.filter(x=>x!==valI);toast(`Retour à ${names[valI]}`);annStep(true)}
 function annJudge(ok){
   if(Date.now()<judgeLock)return;judgeLock=Date.now()+700;
-  const i=valI;
-  if(!ok){annErr.push(i);vib([40,60,40]);sfx.bad();toast(`Cul sec pour ${names[i]}`)}
+  snap();const i=valI;
+  if(!ok){annErr.push(i);addSt(i,'cs');vib([40,60,40]);sfx.bad();toast(`Cul sec pour ${names[i]}`)}
   else{sfx.good();toast(`${names[i]} a bien annoncé`)}
   valI++;annStep(false);
 }
@@ -1555,6 +1609,7 @@ const ieSip=c=>(c+1)*IE.mult;
 const ieCS=c=>IE.cs&&c===IE.cols-1;
 function renderIE(){
   if(IE.ph==='quiz')renderQuiz();else renderIEBoard();
+  saveGame();
 }
 /* Phase 1 : les 4 questions */
 const QHINT=[
@@ -1603,7 +1658,7 @@ function renderQuiz(){
 function answer(v){
   if(locked()||IE.answered)return;lock(850);
   const h=IE.hands[IE.qi],j=h.length;if(j!==IE.qr)return;
-  const c=IE.deck.pop();let ok;
+  snap();const c=IE.deck.pop();let ok;
   if(j===0)ok=(v==='red')===isRed(c);
   else if(j===1){const a=val(c),b=val(h[0]);ok=v==='plus'?a>b:a<b}
   else if(j===2){const a=val(c),x=val(h[0]),y=val(h[1]),lo=Math.min(x,y),hi=Math.max(x,y);ok=v==='inter'?(a>lo&&a<hi):(a<lo||a>hi)}
@@ -1648,7 +1703,7 @@ function renderIEBoard(){
     $('#action').innerHTML=`<div class="nowmini" onclick="showIEReveal()">${face(cur,'xs')}<div><b style="color:${give?'var(--gold)':'#ff8f99'}">${give?'On donne':'On boit'} ${ieCS(col)?'un cul sec':plural(ieSip(col))}</b>
       <div class="hint" style="margin:2px 0 0;font-size:14px">${m.length?m.map(x=>`<b>${esc(names[x.i])}</b> ${ieAmount(col,x.n)}`).join(' · '):`Personne n'a de ${rn(cur.r)}.`}</div></div></div>`;
   }
-  $('#extra').innerHTML=`<div class="panel"><div class="ph"><h2>Les cartes de chacun</h2></div><div class="hands">${names.map((nm,i)=>{
+  $('#extra').innerHTML=`<div class="panel"><div class="ph"><h2>Les cartes de chacun</h2>${k<T?`<button class="pill pedit" onclick="playersEdit()">Joueurs +/−</button>`:''}</div><div class="hands">${names.map((nm,i)=>{
     const hit=cur&&IE.hands[i].some(h=>h.r===cur.r);
     return `<div class="hrow${hit?' hit':''}">${av(i)}<span class="nm">${esc(nm)}</span><div class="hc">${IE.hands[i].map(h=>face(h,'xs'+(cur?(h.r===cur.r?' hl':' dim'):''))).join('')}</div></div>`}).join('')}</div></div>`;
   const D=$('#dockIn');
@@ -1658,9 +1713,9 @@ function renderIEBoard(){
 }
 function ieNext(){
   if(IE.ph!=='board'||locked()||IE.k>=IE.cols*2)return;
-  lock(1900);
+  snap();lock(1900);
   const k=IE.k;
-  flyReveal(`.slot[data-k="${k}"]`,IE.board[k],()=>{IE.k=k+1;
+  flyReveal(`.slot[data-k="${k}"]`,IE.board[k],()=>{IE.k=k+1;if(IE.k>=IE.cols*2)onGameOver();
     {const c=IE.board[k],give=k%2===0,col=k>>1,cs=ieCS(col);matches(c).forEach(x=>{if(cs)addSt(x.i,give?'dcs':'cs',x.n);else addSt(x.i,give?'don':'bu',ieSip(col)*x.n)})}
     showIEReveal(true)},()=>{
     renderIEBoard();
@@ -1676,7 +1731,7 @@ function showIEReveal(fromFly=false){
   <div class="mid">${bigCard(c,'--W:min(60vw,calc((var(--vh,100vh) - 450px) / 1.4),var(--bigmax))')}
     <div class="after${fromFly?' wait':''}" style="width:100%">
       <div class="big" style="font-size:34px;color:${give?'var(--gold)':'#ff8f99'}">${give?'On donne':'On boit'} ${cs?'un cul sec':plural(ieSip(col))}</div>
-      ${m.length?`<div class="mlist">${m.map(x=>`<div class="mchip${give?'':' drink'}">${av(x.i)}<span>${esc(names[x.i])}</span><b>${give?'donne':'boit'} ${ieAmount(col,x.n)}</b></div>`).join('')}</div>`
+      ${m.length?`<div class="mlist">${m.map(x=>`<div class="mchip${give?'':' drink'}">${av(x.i)}<span>${esc(names[x.i])}${give?'':softTag(x.i)}</span><b>${give?'donne':'boit'} ${ieAmount(col,x.n)}</b></div>`).join('')}</div>`
         :`<p class="hint">Personne n'a de ${rn(c.r)}. Ouf !</p>`}
     </div></div>
   <div class="acts">${IE.k<T?`<button class="btn gold block lg" onclick="ieNext()">Carte suivante →</button>`:`<button class="btn gold block lg" onclick="closeStage();render()">Fin de la partie</button>`}</div>`,true);
@@ -1685,18 +1740,19 @@ function showIEReveal(fromFly=false){
 /* ================= CLASSEMENT DES GORGÉES (Inter-Exter, Cheucheuille) =================
    Discret : rien ne s'affiche pendant le jeu, seulement dans la pop-up du bouton podium. */
 let ST=[],rankBy='bu';
-function resetStats(){ST=names.map(()=>({bu:0,cs:0,don:0,dcs:0}))}
-function addSt(i,k,n=1){if(ST[i])ST[i][k]+=n}
+const ZST=()=>({bu:0,cs:0,don:0,dcs:0,bl:0,inno:0});
+function resetStats(){ST=names.map(ZST)}
+function addSt(i,k,n=1){if(ST[i])ST[i][k]=(ST[i][k]||0)+n}
 function showRank(){
-  if(!ST.length)resetStats();
+  if(!ST.length)resetStats();hideUndo();
   const score=s=>rankBy==='bu'?s.bu+s.cs*6:s.don+s.dcs*6;
-  const rows=names.map((n,i)=>({i,n,s:ST[i]||{bu:0,cs:0,don:0,dcs:0}})).sort((a,b)=>score(b.s)-score(a.s)||a.i-b.i);
+  const rows=names.map((n,i)=>({i,n,s:ST[i]||ZST()})).sort((a,b)=>score(b.s)-score(a.s)||a.i-b.i);
   const cell=(g,c)=>`${g}${c?`<small>+${c} cul${c>1?'s':''} sec</small>`:''}`;
   modal(`<h2>Classement</h2>
   <div class="segrow rkseg"><button class="segb${rankBy==='bu'?' on':''}" onclick="rankBy='bu';showRank()">Qui a le plus bu</button><button class="segb${rankBy==='don'?' on':''}" onclick="rankBy='don';showRank()">Qui a le plus donné</button></div>
   <div class="rk"><div class="rkh"><span></span><span>Joueur</span><span>Bu</span><span>Donné</span></div>
   ${rows.map((r,k)=>`<div class="rkr${k<3&&score(r.s)?' rktop':''}"><span class="rkn">${k+1}</span><span class="rkp">${av(r.i)}<b>${esc(r.n)}</b></span><span class="${rankBy==='bu'?'on':''}">${cell(r.s.bu,r.s.cs)}</span><span class="${rankBy==='don'?'on':''}">${cell(r.s.don,r.s.dcs)}</span></div>`).join('')}</div>
-  <p class="hint" style="font-size:13px;margin-top:12px">En gorgées, depuis le début de la partie.${MODE==='chu'?' Les gages de la valise, du Valet, de la Dame et du 10 ne sont pas comptés : on ne sait pas qui a perdu.':''}</p>
+  <p class="hint" style="font-size:13px;margin-top:12px">En gorgées, depuis le début de la partie.${MODE==='chu'?' Les gages de la valise, du Valet, de la Dame et du 10 comptent quand vous indiquez qui a perdu.':''}</p>
   <button class="btn gold block lg" onclick="closeModal()">OK</button>`);
 }
 
@@ -1788,7 +1844,8 @@ function renderChu(){
   $('#action').innerHTML=CH.over
     ?`<div class="center"><div class="big">Partie terminée</div><p class="hint" style="margin-bottom:0">${esc(names[CH.lastDrawer])} a bu le verre du milieu.</p></div>`
     :`<div class="turn">${av(CH.turn)}<div><div class="kicker">À toi de piocher</div><div class="big" style="font-size:26px">${esc(names[CH.turn])}</div></div></div>
-      <p class="hint" style="margin:10px 0 0">Touche une carte du cercle. Attention : si tu fais un trou, c'est cul sec.</p>`;
+      <p class="hint" style="margin:10px 0 0">Touche une carte du cercle. Attention : si tu fais un trou, c'est cul sec.</p>
+      <button class="link" onclick="playersEdit()">Ajouter ou retirer un joueur</button>`;
   $('#extra').innerHTML=`<div class="panel"><div class="ph"><h2>Pouvoirs</h2><span class="hint" style="margin:0;font-size:12px">Touche pour le lancer</span></div>
     <div class="powers">
       ${pw('chu','Cheucheuille','Valet',P.chu)}${pw('freeze','Freeze','Dame',P.freeze)}${pw('pouce','Roi des pouces','10',P.pouce)}
@@ -1796,11 +1853,12 @@ function renderChu(){
   function pw(k,t,card,h){return `<button class="power${h==null?' none':''}" ${h==null?'disabled':''} onclick="powerFlash('${k}')"><span class="pk">${card}</span><span class="pt">${t}</span><span class="ph2">${who(h)}</span></button>`}
   const D=$('#dockIn');
   D.innerHTML=CH.over?endDock():`<button class="btn gold block lg" onclick="chuRandom()">Piocher une carte au hasard</button>`;
+  saveGame();
 }
 function chuRandom(){const l=CH.cards.map((x,i)=>x.taken?-1:i).filter(i=>i>=0);if(l.length)chuDraw(l[Math.floor(Math.random()*l.length)])}
 function chuDraw(i){
   if(CH.over||locked()||CH.cards[i].taken)return;
-  lock(1900);
+  snap();lock(1900);
   const before=gapCount(CH.cards.filter(x=>!x.taken));
   const after=gapCount(CH.cards.filter((x,j)=>!x.taken&&j!==i));
   const hole=S.chu.hole&&after>before;
@@ -1819,6 +1877,7 @@ function chuDraw(i){
     if(c.r==='6'){addSt((drawer-1+N)%N,'bu');addSt(drawer,'don')}
     if(c.r==='8'){addSt((drawer+1)%N,'bu');addSt(drawer,'don')}
     if(c.r==='7')names.forEach((_,j)=>addSt(j,'bu'));
+    if(CH.over)onGameOver();
     showChuReveal(c,drawer,hole,true);
   },()=>{
     renderChu();
@@ -1833,11 +1892,11 @@ function chuDraw(i){
 function chuRule(c,d){
   const N=names.length,D=`<b>${esc(names[d])}</b>`,prev=`<b>${esc(names[(d-1+N)%N])}</b>`,nxt=`<b>${esc(names[(d+1)%N])}</b>`,sv=S.chu.valet,sd=S.chu.dame;
   switch(c.r){
-    case 'A':return {t:'Cul sec !',k:'bad',d:`${D} boit son verre cul sec.`};
+    case 'A':return {t:'Cul sec !',k:'bad',d:`${D}${softTag(d)} boit son verre cul sec.`};
     case '3':return {t:'Dans ma valise il y a…',k:'',d:`${D} commence : « Dans ma valise il y a… » et un objet. Chacun répète toute la liste et ajoute le sien. Le premier qui se trompe boit.`};
-    case '6':return {t:"Le joueur d'avant boit",k:'',d:`${prev} boit 1 gorgée.`};
+    case '6':return {t:"Le joueur d'avant boit",k:'',d:`${prev}${softTag((d-1+N)%N)} boit 1 gorgée.`};
     case '7':return {t:'Tournée générale',k:'bad',d:'Tout le monde boit !'};
-    case '8':return {t:"Le joueur d'après boit",k:'',d:`${nxt} boit 1 gorgée.`};
+    case '8':return {t:"Le joueur d'après boit",k:'',d:`${nxt}${softTag((d+1)%N)} boit 1 gorgée.`};
     case '10':return {t:'Roi des pouces',k:'gold',d:`${D} a le pouvoir : quand il pose son pouce sur la table, tout le monde l'imite. Le dernier boit 1 gorgée.`};
     case 'V':return {t:'Cheucheuille',k:'gold',d:`${D} peut à tout moment crier « Cheucheuille ! » en se tapant la tête. Tout le monde l'imite : le dernier boit ${plural(sv)}.`};
     case 'D':return {t:'Freeze',k:'gold',d:`${D} peut à tout moment dire « Freeze ! ». Tout le monde se fige : celui qui bouge boit ${plural(sd)}.`};
@@ -1855,6 +1914,7 @@ function showChuReveal(c,d,hole,fromFly=false){
       <div class="big chut ${r.k}">${r.t}</div>
       <p class="hint" style="margin:6px 0 0;font-size:17px">${r.d}</p>
       ${c.r==='R'?`<div class="glassmini">${glassSVG(CH.kings,true)}</div>`:''}
+      ${c.r==='3'?`<button class="btn lostbtn" onclick="lostAsk('valise')">Qui a perdu ?</button>`:''}
       ${hole?`<div class="verdict bad" style="margin-top:12px">Cercle cassé !<small>${esc(names[d])} a fait un trou : cul sec</small></div>`:''}
     </div></div>
   <div class="acts">${CH.over?endDock():`<button class="btn gold block lg" onclick="closeStage();render()">À ${esc(names[CH.turn])} de piocher →</button>`}</div>`,true);
@@ -1868,6 +1928,7 @@ function powerFlash(k){
   el.innerHTML=`<div><div class="kicker" style="color:#fff">${esc(names[h])}</div><div class="fw">${t}</div><p>${sub}</p></div>`;
   el.onclick=()=>el.remove();
   document.body.appendChild(el);setTimeout(()=>el.remove(),2600);
+  lostAsk(k);
 }
 
 /* ================= MIROIR SPECTATEUR =================
@@ -1916,8 +1977,9 @@ function snapshot(){
   };
 }
 async function liveStart(){
-  const keep=LIVE.code;liveStop(true);
-  if(!LDB)return;
+  const keep=LIVE.code||LIVE.resume;liveStop(true);
+  if(!LDB){LIVE.resume=keep;return}
+  LIVE.resume=null;
   LIVE.code=keep||newCode();LIVE.last='';LIVE.canWrite=true;
   $('#liveBtn').hidden=false;$('#liveCode').textContent=LIVE.code;
   LIVE.obs=new MutationObserver(()=>{clearTimeout(LIVE.tm);LIVE.tm=setTimeout(livePush,300)});
@@ -2049,7 +2111,204 @@ function quitAsk(){
   modal(`<div class="center"><h2>Quitter la partie ?</h2><p class="hint">La partie en cours sera perdue.</p></div>
   <div class="row2"><button class="btn lg" onclick="closeModal()">Continuer</button><button class="btn red lg" onclick="toSetup()">Quitter</button></div>`);
 }
-function toSetup(){liveStop();closeModal();closeStage();$('#game').hidden=true;$('#dock').hidden=true;document.body.classList.remove('ingame');$('#setup').hidden=false;renderSetup();window.scrollTo(0,0)}
+function toSetup(){clearSave();clearUndo();OVER=false;clearTimeout(waterT);document.querySelectorAll('.water').forEach(e=>e.remove());liveStop();closeModal();closeStage();$('#game').hidden=true;$('#dock').hidden=true;document.body.classList.remove('ingame');$('#setup').hidden=false;renderSetup();window.scrollTo(0,0)}
+
+/* ================= SAUVEGARDE, REPRISE ET ANNULATION =================
+   La partie est enregistrée à chaque étape (localStorage pyr_game). À la réouverture, on propose de la reprendre.
+   Après chaque action importante, un bouton « Annuler » permet de revenir un coup en arrière. */
+const SAVE_KEY='pyr_game';
+let OVER=false,saveT=null,UNDO=null,undoT=null;
+function getState(){
+  const s={v:1,t:Date.now(),MODE,names:names.slice(),ST,OVER,live:LIVE.code};
+  if(MODE==='classic')s.cl={ROWS,TOTAL,HAND,MULT,SUMMIT,hands,pyr,flipped,phase,checked,validated,valI,annErr,summitHit,peekBlock};
+  else if(MODE==='ie')s.IE=IE;else s.CH=CH;
+  return JSON.stringify(s);
+}
+function setState(str){
+  const s=JSON.parse(str);MODE=s.MODE;names=s.names;ST=s.ST||[];OVER=!!s.OVER;
+  if(MODE==='classic'){({ROWS,TOTAL,HAND,MULT,SUMMIT,hands,pyr,flipped,phase,checked,validated,valI,annErr,summitHit,peekBlock}=s.cl);
+    document.documentElement.style.setProperty('--rows',ROWS.length);document.body.classList.toggle('many',ROWS.length>6)}
+  else if(MODE==='ie'){IE=s.IE;IE.dealt=true;IE.fresh=false;if(IE.res)IE.res.wait=false}
+  else{CH=s.CH;CH.dealt=true}
+  names.forEach((_,i)=>{ST[i]={...ZST(),...(ST[i]||{})}});
+  return s;
+}
+function saveGame(){
+  if(SPEC.on||OVER||$('#game').hidden)return;
+  clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(SAVE_KEY,getState())}catch(e){}},60);
+}
+function clearSave(){clearTimeout(saveT);try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
+function redraw(){if(MODE==='classic')buildPyr(true);render();window.scrollTo(0,0)}
+function resumeAsk(){
+  let raw=null,s=null;try{raw=localStorage.getItem(SAVE_KEY)}catch(e){}
+  if(!raw)return;try{s=JSON.parse(raw)}catch(e){}
+  if(!s||s.v!==1||s.OVER||!Array.isArray(s.names)||Date.now()-s.t>12*3600e3){clearSave();return}
+  const min=Math.max(1,Math.round((Date.now()-s.t)/60000)),ago=min<60?`${min} min`:`${Math.round(min/60)} h`;
+  const m={classic:'La Pyramide',ie:'Inter-Exter',chu:'Cheucheuille'}[s.MODE]||'Partie';
+  modal(`<div class="center"><div class="kicker">Une partie était en cours</div><h2 style="font-size:26px;margin:6px 0 4px">${m}</h2>
+  <p class="hint">${esc(list(s.names))}<br>Dernier coup il y a ${ago}.</p></div>
+  <button class="btn gold block lg" onclick="resumeGame()">Reprendre la partie</button>
+  <button class="btn block" style="margin-top:10px" onclick="clearSave();closeModal()">Non, on repart de zéro</button>`,true);
+}
+function resumeGame(){
+  let raw=null;try{raw=localStorage.getItem(SAVE_KEY)}catch(e){}
+  if(!raw){closeModal();return}
+  try{const s=setState(raw);save('pyr_names',names);S.mode=MODE;enterGame();LIVE.resume=s.live||null;redraw();liveStart();sfx.tap();toast('On reprend !')}
+  catch(e){clearSave();toSetup();toast('Impossible de reprendre cette partie')}
+}
+/* annulation : on garde l'état juste avant la dernière action */
+function snap(){if(SPEC.on||$('#game').hidden)return;UNDO=getState();showUndo()}
+function showUndo(){
+  let b=$('#undoBtn');
+  if(!b){b=document.createElement('button');b.id='undoBtn';b.className='undo';b.type='button';b.setAttribute('aria-label','Annuler la dernière action');
+    b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4.5 11.5 9 16"/><path d="M5 11.5h9.5a5 5 0 0 1 0 10H12"/></svg>Annuler';b.onclick=undo;document.body.appendChild(b)}
+  b.classList.add('show');clearTimeout(undoT);undoT=setTimeout(hideUndo,9000);
+}
+function hideUndo(){const b=$('#undoBtn');if(b)b.classList.remove('show')}
+function clearUndo(){UNDO=null;clearTimeout(undoT);hideUndo()}
+function undo(){
+  if(!UNDO||locked())return;const u=UNDO;UNDO=null;hideUndo();clearTimeout(waterT);
+  closeModal();closeStage();document.querySelectorAll('.flash,.water').forEach(e=>e.remove());
+  setState(u);redraw();saveGame();sfx.tap();vib(12);toast('Dernier coup annulé');
+}
+
+/* ================= FIN DE PARTIE : pause eau, puis récap ================= */
+let waterT=null,lastWater=-1;
+const WATER=[
+  ['C\'est l\'heure de s\'hydrater','Un grand verre d\'eau pour tout le monde. Oui, toi aussi, au fond.'],
+  ['Allez, c\'est l\'heure de rouiller','Un verre d\'eau chacun. Promis, on ne rouille pas en un seul verre.'],
+  ['Pause flotte','Ton foie a laissé un vocal de quatre minutes. En résumé : de l\'eau, s\'il te plaît.'],
+  ['Arrêt aux stands','Plein d\'eau pour tout le monde, et on repart pour un tour.']
+];
+function onGameOver(){
+  OVER=true;clearSave();clearTimeout(waterT);
+  waterT=setTimeout(waterBreak,3200);
+}
+function waterBreak(){
+  if(SPEC.on||$('#game').hidden||!OVER||$('.water'))return;hideUndo();
+  let k;do{k=Math.floor(Math.random()*WATER.length)}while(k===lastWater&&WATER.length>1);lastWater=k;
+  const [t,d]=WATER[k],el=document.createElement('div');el.className='water';
+  el.innerHTML=`<div class="wcard"><svg class="wglass" viewBox="0 0 64 80" aria-hidden="true"><path d="M10 8h44l-5 62a4 4 0 0 1-4 4H19a4 4 0 0 1-4-4z" class="wg"/><path class="wl" d="M13.6 30c6 3 12 3 18.4 0s12.4-3 18.4 0L47 69a3 3 0 0 1-3 3H20a3 3 0 0 1-3-3z"/><circle cx="26" cy="54" r="2" class="wb"/><circle cx="36" cy="44" r="1.5" class="wb"/><circle cx="31" cy="62" r="1.2" class="wb"/></svg>
+  <div class="kicker">Pause eau</div><div class="wt">${t}</div><p class="hint">${d}</p>
+  <button class="btn gold block lg" onclick="this.closest('.water').remove()">C'est bu</button></div>`;
+  el.addEventListener('click',e=>{if(e.target===el)el.remove()});
+  document.body.appendChild(el);sfx.good();vib([20,40,20]);
+}
+
+/* titres décalés du récap, calculés à partir des compteurs ST */
+function recapTitles(){
+  const N=names.length,idx=names.map((_,i)=>i),s=i=>ST[i]||ZST(),T=[];
+  const who=l=>l.map(i=>names[i]).join(' & ');
+  const best=(f,min=1)=>{const m=Math.max(...idx.map(f));return m>=min?{v:m,l:idx.filter(i=>f(i)===m)}:null};
+  const drinkers=idx.filter(i=>!isSoft(i));
+  if(MODE!=='classic'){
+    const b=best(i=>s(i).bu);if(b)T.push({t:'L\'éponge',w:b.l,d:`${plural(b.v)} englouties. Respect. Ou inquiétude, on hésite.`});
+    const g=best(i=>s(i).don);if(g)T.push({t:'Le mécène',w:g.l,d:`${plural(g.v)} distribuées. La générosité, ça n'a pas de prix.`});
+    if(N>=3&&drinkers.length>=2){const lo=Math.min(...drinkers.map(i=>s(i).bu)),l=drinkers.filter(i=>s(i).bu===lo);
+      if(l.length<drinkers.length)T.push({t:'Le fantôme',w:l,d:lo?`${plural(lo)} seulement. On t'a vu ce soir, au moins ?`:'Zéro gorgée. Tu étais là, ou c\'était ton sosie ?'})}
+  }else{
+    const b=best(i=>s(i).bl);if(b)T.push({t:'Démasqué',w:b.l,d:`Pris ${b.v} fois la main dans le sac. Le poker, ce sera pour une autre vie.`});
+    const n=best(i=>s(i).inno);if(n)T.push({t:'Le suspect idéal',w:n.l,d:`Accusé à tort ${n.v} fois. Une tête de coupable, c'est tout.`});
+    const p=best(i=>s(i).bl===0&&s(i).inno===0?1:0);if(p&&p.l.length<N)T.push({t:'Le discret',w:p.l,d:'Jamais accusé, jamais pris. Soit très fort, soit très loin du jeu.'});
+  }
+  const c=best(i=>s(i).cs);if(c)T.push({t:'Le plongeur',w:c.l,d:`${c.v} cul${c.v>1?'s':''} sec${c.v>1?'s':''}. Sans bouée, sans regret.`});
+  if(MODE==='chu'&&CH.over&&CH.lastDrawer!=null)T.push({t:'Le cocktail maison',w:[CH.lastDrawer],d:'A bu le verre du milieu. Personne ne saura jamais ce qu\'il y avait dedans.'});
+  const sam=idx.filter(i=>glassOf(names[i])==='sam');
+  if(sam.length)T.push({t:'Le héros de la soirée',w:sam,d:`${sam.length>1?'Ils conduisent':'Conduit'} ce soir. Sans ${sam.length>1?'eux':'lui'}, tout le monde rentre à pied.`,sam:1});
+  return {T,tot:idx.reduce((a,i)=>a+s(i).bu,0),cs:idx.reduce((a,i)=>a+s(i).cs,0),who};
+}
+function showRecap(){
+  if(!ST.length)resetStats();hideUndo();
+  const R=recapTitles(),m={classic:'La Pyramide',ie:'Inter-Exter',chu:'Cheucheuille'}[MODE];
+  modal(`<div class="center"><div class="kicker">${m}</div><h2 style="font-size:28px;margin:4px 0 2px">Le récap</h2>
+  <p class="hint" style="margin-top:0">${MODE==='classic'?'Les bluffs, les accusations et les culs secs de la partie.':`${plural(R.tot)} bues au total${R.cs?` · ${R.cs} cul${R.cs>1?'s':''} sec${R.cs>1?'s':''}`:''}.`}</p></div>
+  <div class="rcp">${R.T.length?R.T.map(x=>`<div class="rct${x.sam?' sam':''}"><div class="rck">${x.t}</div><div class="rcn">${x.w.map(i=>av(i)).join('')}<b>${esc(R.who(x.w))}</b></div><p>${x.d}</p></div>`).join('')
+    :'<p class="hint center">Partie trop sage pour décerner des titres. Rejouez !</p>'}</div>
+  <div class="row2" style="margin-top:14px"><button class="btn lg" onclick="closeModal()">Fermer</button><button class="btn gold lg" onclick="shareRecap()">Partager</button></div>`);
+}
+/* image du récap au format story (1080 × 1920), partagée ou téléchargée */
+async function shareRecap(){
+  const R=recapTitles(),m={classic:'La Pyramide',ie:'Inter-Exter',chu:'Cheucheuille'}[MODE];
+  try{await document.fonts.ready}catch(e){}
+  const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+  const css=getComputedStyle(document.body),v=k=>css.getPropertyValue(k).trim();
+  const bg=v('--bg0')||v('--felt2')||'#05111e',acc=v('--gold')||'#ffd27a',o1=v('--o1')||v('--felt1')||'#d1203f',o2=v('--o2')||'#ffb444';
+  g.fillStyle=bg;g.fillRect(0,0,W,H);
+  [[o1,180,260,900,.55],[o2,960,1500,950,.45],[acc,900,500,600,.18]].forEach(([col,x,y,r,a])=>{const gr=g.createRadialGradient(x,y,0,x,y,r);
+    gr.addColorStop(0,col);gr.addColorStop(1,'transparent');g.globalAlpha=a;g.fillStyle=gr;g.fillRect(0,0,W,H);g.globalAlpha=1});
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()};
+  const wrap=(t,x,y,maxW,lh)=>{const words=t.split(' ');let line='',yy=y;for(const w of words){const test=line?line+' '+w:w;if(g.measureText(test).width>maxW&&line){g.fillText(line,x,yy);line=w;yy+=lh}else line=test}g.fillText(line,x,yy);return yy+lh};
+  g.textAlign='center';g.fillStyle='#fff8ec';g.font='900 150px "Playfair Display", Georgia, serif';
+  g.shadowColor=acc;g.shadowBlur=40;g.fillText('Alcolo',W/2,260);g.shadowBlur=0;
+  g.font='800 40px "Bricolage Grotesque", sans-serif';g.fillStyle=acc;g.fillText(`LE RÉCAP · ${m.toUpperCase()}`,W/2,345);
+  g.font='600 34px "Bricolage Grotesque", sans-serif';g.fillStyle='rgba(255,255,255,.75)';
+  g.fillText(new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}),W/2,400);
+  let y=480;const list=R.T.slice(0,6);
+  for(const x of list){
+    g.font='600 38px "Bricolage Grotesque", sans-serif';
+    const lines=Math.max(1,Math.ceil(g.measureText(x.d).width/840)),h=190+lines*50;
+    if(y+h>H-170)break;
+    rr(70,y,W-140,h,44);g.fillStyle='rgba(255,255,255,.1)';g.fill();g.strokeStyle='rgba(255,255,255,.22)';g.lineWidth=2;g.stroke();
+    g.textAlign='left';g.fillStyle=acc;g.font='800 32px "Bricolage Grotesque", sans-serif';g.fillText(x.t.toUpperCase(),120,y+64);
+    g.fillStyle='#fff';g.font='800 58px "Bricolage Grotesque", sans-serif';g.fillText(R.who(x.w),120,y+134);
+    g.fillStyle='rgba(255,255,255,.82)';g.font='600 38px "Bricolage Grotesque", sans-serif';wrap(x.d,120,y+190,840,50);
+    y+=h+30;
+  }
+  g.textAlign='center';g.fillStyle='rgba(255,255,255,.6)';g.font='700 34px "Bricolage Grotesque", sans-serif';
+  if(MODE!=='classic')g.fillText(`${plural(R.tot)} bues au total${R.cs?` · ${R.cs} cul${R.cs>1?'s':''} sec${R.cs>1?'s':''}`:''}`,W/2,H-150);
+  g.fillStyle=acc;g.fillText('alcolo.pages.dev',W/2,H-90);
+  const blob=await new Promise(r=>c.toBlob(r,'image/png'));if(!blob){toast('Image impossible à créer');return}
+  const file=new File([blob],'alcolo-recap.png',{type:'image/png'});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Le récap Alcolo'});return}}catch(e){if(e&&e.name==='AbortError')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='alcolo-recap.png';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('Image enregistrée');
+}
+
+/* ================= JOUEURS EN COURS DE PARTIE (Cheucheuille, plateau d'Inter-Exter) ================= */
+const canEditPlayers=()=>!OVER&&(MODE==='chu'||(MODE==='ie'&&IE.ph==='board'));
+function playersEdit(){
+  if(!canEditPlayers())return;
+  modal(`<h2>Joueurs</h2><p class="hint" style="margin-top:2px">Quelqu'un arrive ou s'en va ? La partie continue.</p>
+  <div class="olist">${names.map((n,i)=>`<div class="oitem" style="touch-action:auto;cursor:default">${av(i)}<b>${esc(n)}</b>${names.length>2?`<button class="pdel" onclick="removeMid(${i})" aria-label="Retirer ${esc(n)}">Retirer</button>`:''}</div>`).join('')}</div>
+  ${names.length<MAXP?`<form class="addrow" style="margin-top:14px" onsubmit="event.preventDefault();addMid()"><input id="midName" placeholder="Prénom du nouveau" maxlength="14" autocomplete="off" autocapitalize="words" enterkeyhint="done"><button class="btn gold" type="submit">Ajouter</button></form>`:''}
+  <p class="hint" style="font-size:13px;margin-top:10px">${MODE==='chu'?'Le nouveau joueur pioche en dernier dans le tour.':'Le nouveau joueur reçoit 4 cartes au hasard.'}</p>`);
+}
+function addMid(){
+  const inp=$('#midName');let v=(inp&&inp.value||'').trim().replace(/\s+/g,' ').slice(0,14);
+  if(!v||names.length>=MAXP)return;
+  if(names.some(n=>n.toLowerCase()===v.toLowerCase())){toast('Ce prénom est déjà pris');return}
+  snap();names.push(v);ST.push(ZST());
+  if(MODE==='ie'){if(IE.deck.length<4)IE.deck.push(...deck(1));IE.hands.push(IE.deck.splice(0,4))}
+  save('pyr_names',names);sfx.tap();render();saveGame();playersEdit();toast(`${v} rejoint la partie`);
+}
+function removeMid(i){
+  if(names.length<=2||names[i]==null)return;
+  snap();const n=names[i];names.splice(i,1);ST.splice(i,1);
+  const fix=h=>h==null?h:h===i?null:h>i?h-1:h;
+  if(MODE==='chu'){
+    if(i<CH.turn)CH.turn--;if(CH.turn>=names.length)CH.turn=0;
+    for(const k in CH.holders)CH.holders[k]=fix(CH.holders[k]);CH.lastDrawer=fix(CH.lastDrawer);
+  }else IE.hands.splice(i,1);
+  save('pyr_names',names);sfx.tap();render();saveGame();playersEdit();toast(`${n} a quitté la partie`);
+}
+
+/* ================= CHEUCHEUILLE : « qui a perdu ? » après un gage ================= */
+function lostAsk(k){
+  const h=CH.holders[k],n={chu:S.chu.valet,freeze:S.chu.dame,pouce:1,valise:1}[k];
+  const t={chu:'Cheucheuille',freeze:'Freeze',pouce:'Roi des pouces',valise:'La valise'}[k];
+  modal(`<div class="center"><div class="kicker">${t}</div><h2>Qui a perdu ?</h2><p class="hint">Il boit ${plural(n)}. Un tap suffit.</p></div>
+  <div class="pgrid" style="margin-top:4px">${names.map((nm,i)=>i===h?'':`<button class="pbtn" onclick="lostPick('${k}',${i})">${av(i)}<span>${esc(nm)}</span></button>`).join('')}</div>
+  <button class="link" onclick="closeModal()">Personne, on passe</button>`);
+}
+function lostPick(k,i){
+  const h=CH.holders[k],n={chu:S.chu.valet,freeze:S.chu.dame,pouce:1,valise:1}[k];
+  snap();addSt(i,'bu',n);if(h!=null&&h!==i)addSt(h,'don',n);
+  closeModal();saveGame();sfx.glug();vib(20);toast(`${names[i]} boit ${plural(n)}`);
+}
+
+/* boissons sans alcool : petite mention à côté du prénom quand il doit boire */
+const isSoft=i=>['soft','sam'].includes(glassOf(names[i]));
+const softTag=i=>isSoft(i)?` <i class="softtag">${glassOf(names[i])==='sam'?'SAM · soft':'soft'}</i>`:'';
 
 function rules(){
   const m=$('#game').hidden?S.mode:MODE,ie=m==='ie';  // sans jeu choisi : règles de la Pyramide
@@ -2104,6 +2363,7 @@ let tt;
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000)}
 
 renderSetup();
+resumeAsk();
 </script>
 <script src="firebase-config.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
