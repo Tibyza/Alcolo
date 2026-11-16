@@ -1,0 +1,13 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "live": {
+      "$code": {
+        ".read": true,
+        ".write": "$code.matches(/^[A-Z2-9]{4}$/)",
+        ".validate": "newData.hasChildren(['s','t','ended']) && newData.child('s').isString() && newData.child('s').val().length < 300000 && newData.child('t').isNumber() && newData.child('ended').isBoolean()"
+      }
+    }
+  }
+}

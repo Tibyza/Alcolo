@@ -1,0 +1,25 @@
+{
+ "name": "Alcolo",
+ "short_name": "Alcolo",
+ "description": "Jeux à boire : Pyramide, Inter-Exter, Cheucheuille",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#0a2a1e",
+ "theme_color": "#0a2a1e",
+ "lang": "fr",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}
