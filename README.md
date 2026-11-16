@@ -4,6 +4,8 @@ Jeux à boire pour toute la table : **La Pyramide**, **Inter-Exter**, **Cheucheu
 
 L'appli est une seule page web (`index.html`). Hébergement gratuit sur Cloudflare Pages, mode spectateur sur Firebase.
 
+> Pour reprendre le développement (nouvelle conversation, autre IA) : lire **[CONTEXT.md](CONTEXT.md)**. Les modifications se font toujours sur la branche `test` avant `main`.
+
 ## Contenu du dossier
 
 | Fichier | Rôle |
